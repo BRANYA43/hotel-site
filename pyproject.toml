@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "hotel"
+version = "0.1.0"
+description = ""
+authors = ["BRANYA <tbd2504@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.0"
+python-dotenv = "^1.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+webdriver-manager = "^4.0.1"
+selenium = "^4.16.0"
+pre-commit = "^3.6.0"
+mypy = "^1.7.1"
+isort = "^5.13.2"
+ruff = "^0.1.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+line-length = 120
+ignore-init-module-imports = true
+extend-exclude = ["migrations"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.isort]
+line_length = 120
+multi_line_output = 4
+
+[tool.mypy]
+ignore_missing_imports = true
+

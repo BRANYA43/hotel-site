@@ -1,0 +1,30 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff checker
+        entry: ruff check
+        language: python
+        types: [ python ]
+        args: ["--fix"]
+
+      - id: ruff
+        name: ruff formatter
+        entry: ruff format
+        language: python
+        types: [ python ]
+        args: []
+
+      - id: isort
+        name: isort
+        entry: isort
+        language: python
+        types: [ python ]
+        args: []
+
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: python
+        types: [ python ]
+        args: []
