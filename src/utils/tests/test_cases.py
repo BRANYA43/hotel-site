@@ -1,6 +1,6 @@
 from django.db import models
 
-from base.cases import ModelTestCase
+from utils.cases import ModelTestCase
 
 
 class TestModel(models.Model):
