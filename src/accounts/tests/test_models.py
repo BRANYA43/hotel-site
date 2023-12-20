@@ -4,7 +4,7 @@ from django.contrib.auth.models import PermissionsMixin
 
 from accounts.manager import UserManager
 from accounts.models import User
-from base.cases import ModelTestCase
+from utils.cases import ModelTestCase
 
 
 def create_test_user(email='rick.sanchez@test.com', password='qwe123!@#', **extra_field):
