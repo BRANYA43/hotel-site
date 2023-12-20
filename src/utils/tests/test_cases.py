@@ -16,11 +16,11 @@ class ModelTestCaseTest(ModelTestCase):
     model = TestModel
 
     def test_get_field_returns_correct_model_field(self):
-        field = self.get_field('field_1')
+        field = self.get_field(TestModel, 'field_1')
         self.assertIsInstance(field, models.Field)
 
     def test_get_fields_returns_all_model_fields(self):
-        fields = self.get_fields()
+        fields = self.get_fields(TestModel)
 
         self.assertEqual(len(fields), 3)
 
@@ -28,7 +28,7 @@ class ModelTestCaseTest(ModelTestCase):
             self.assertIsInstance(field, field_class)
 
     def test_get_fields_returns_names_of_all_model_fields(self):
-        fields = self.get_fields(only_names=True)
+        fields = self.get_fields(TestModel, only_names=True)
 
         self.assertEqual(len(fields), 3)
 
@@ -36,18 +36,5 @@ class ModelTestCaseTest(ModelTestCase):
             self.assertEqual(field, field_name)
 
     def test_get_meta_attr_returns_correct_model_meta_attr(self):
-        attr = self.get_meta_attr('abstract')
+        attr = self.get_meta_attr(TestModel, 'abstract')
         self.assertTrue(attr)
-
-    def test_assertFieldNamesEqual_raise_error(self):
-        fields_1 = ['q', 'w', 'e']
-        fields_2 = ['q', 'r', 'e']
-
-        with self.assertRaisesRegex(AssertionError, 'Field names are not match'):
-            self.assertFieldNamesEqual(fields_1, fields_2)
-
-    def test_assertFieldNamesEqual_not_raise_error(self):
-        fields_1 = ['q', 'w', 'e']
-        fields_2 = ['q', 'w', 'e']
-
-        self.assertFieldNamesEqual(fields_1, fields_2)  # not raise error
