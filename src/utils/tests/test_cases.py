@@ -38,3 +38,14 @@ class ModelTestCaseTest(ModelTestCase):
     def test_get_meta_attr_returns_correct_model_meta_attr(self):
         attr = self.get_meta_attr(TestModel, 'abstract')
         self.assertTrue(attr)
+
+    def test_assertModelHasNecessaryFields_not_raise_error(self):
+        necessary_fields = ['field_1', 'field_2']
+
+        self.assertModelHasNecessaryFields(TestModel, necessary_fields)  # not raise
+
+    def test_assertModelHasNecessaryFields_raise_error(self):
+        necessary_fields = ['field_1', 'field_2', 'field_4']
+
+        with self.assertRaisesRegex(AssertionError, r'Model does not has : "\w+"'):
+            self.assertModelHasNecessaryFields(TestModel, necessary_fields)

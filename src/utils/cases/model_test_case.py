@@ -19,3 +19,9 @@ class ModelTestCase(TestCase):
     @staticmethod
     def get_meta_attr(model: Type[Model], name: str):
         return getattr(model._meta, name)
+
+    def assertModelHasNecessaryFields(self, model: Type[Model], fields: list[str]):
+        model_fields = self.get_fields(model, only_names=True)
+
+        for field in fields:
+            self.assertIn(field, model_fields, msg=f'Model does not has : "{field}"')
