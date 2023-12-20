@@ -1,6 +1,7 @@
 from typing import Type
 
 from django.forms import Field, Form
+from django.forms.utils import ErrorDict
 from django.test import TestCase
 
 
@@ -20,3 +21,7 @@ class FormTestCase(TestCase):
         expected_fields.sort()
 
         self.assertListEqual(fields, expected_fields)
+
+    def assertErrorDictHasError(self, error_dict: ErrorDict, message: str):
+        messages = [msg for msgs in error_dict.values() for msg in msgs]
+        self.assertIn(message, messages)

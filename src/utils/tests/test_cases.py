@@ -1,5 +1,6 @@
 from django import forms
 from django.db import models
+from django.forms.utils import ErrorDict
 
 from utils.cases import FormTestCase, ModelTestCase
 
@@ -91,3 +92,18 @@ class FormTestCaseTest(FormTestCase):
 
         with self.assertRaises(AssertionError):
             self.assertFieldListEqual(fields, expected_fields)
+
+    def test_assertErrorDictHasError_not_raise_error(self):
+        expected_message = 'error message'
+        error_dict = ErrorDict()
+        error_dict.setdefault('field', [expected_message])
+
+        self.assertErrorDictHasError(error_dict, expected_message)  # not raise
+
+    def test_assertErrorDictHasError_raise_error(self):
+        expected_message = 'error message'
+        error_dict = ErrorDict()
+        error_dict.setdefault('field', ['incorrect message'])
+
+        with self.assertRaises(AssertionError):
+            self.assertErrorDictHasError(error_dict, expected_message)
