@@ -3,7 +3,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 
 from accounts.manager import UserManager
-from accounts.models import User
+from accounts.models import Profile, User
 from utils.cases import ModelTestCase
 
 
@@ -69,3 +69,56 @@ class UserModelTest(ModelTestCase):
 
     def test_manager_is_UserManager(self):
         self.assertIsInstance(self.model.objects, UserManager)
+
+
+class ProfileModelTest(ModelTestCase):
+    model = Profile
+
+    def test_model_has_necessary_fields(self):
+        necessary_fields = [
+            'user',
+            'first_name',
+            'last_name',
+            'birthday',
+            'telephone',
+        ]
+        self.assertModelHasNecessaryFields(Profile, necessary_fields)
+
+    def test_model_has_one_to_one_relation_with_user_model(self):
+        field = self.get_field(Profile, 'user')
+        self.assertTrue(field.one_to_one)
+        self.assertIs(field.related_model, get_user_model())
+
+    def test_first_name_is_null(self):
+        field = self.get_field(Profile, 'first_name')
+        self.assertTrue(field.null)
+
+    def test_last_name_is_null(self):
+        field = self.get_field(Profile, 'last_name')
+        self.assertTrue(field.null)
+
+    def test_birthday_is_null(self):
+        field = self.get_field(Profile, 'birthday')
+        self.assertTrue(field.null)
+
+    def test_telephone_is_null(self):
+        field = self.get_field(Profile, 'telephone')
+        self.assertTrue(field.null)
+
+    def test_model_create_after_save_user_model(self):
+        user = create_test_user()
+
+        self.assertEqual(Profile.objects.count(), 1)
+
+        profile = Profile.objects.first()
+
+        self.assertEqual(profile.user.id, user.id)
+
+    def test_model_is_deleted_after_deleting_user_model(self):
+        user = create_test_user()
+
+        self.assertEqual(Profile.objects.count(), 1)
+
+        user.delete()
+
+        self.assertEqual(Profile.objects.count(), 0)

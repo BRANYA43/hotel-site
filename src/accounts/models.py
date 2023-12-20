@@ -1,8 +1,17 @@
+from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
 from accounts.manager import UserManager
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=255, null=True)
+    last_name = models.CharField(max_length=255, null=True)
+    birthday = models.DateField(null=True)
+    telephone = models.CharField(max_length=20, null=True)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
