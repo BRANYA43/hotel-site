@@ -1,0 +1,10 @@
+<p>Hello!</p>
+<p>Thank you for registration account on our site <a href="{% url 'home' %}">{{ site_name }}</a>.</p>
+<p>For activation your account you necessarily follow by next link:</p>
+<p></p>
+<p>{{ protocol }}://{{ domain }}{% url 'accounts:user-confirm-email' uidb64=uid token=token %}</p>
+<p></p>
+<p>If you cannot follow by this link, try to copy it to address field of your browser.</p>
+<p>This message is made automatically. Please, do not answer to it.</p>
+<p>Sincerely,</p>
+<p>{{ site_name }} service team</p>

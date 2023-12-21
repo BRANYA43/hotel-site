@@ -1,8 +1,11 @@
 from django.contrib.auth import get_user_model
+from django.core import mail
 from django.test import TestCase
 from django.urls import reverse, path
 
-from accounts.urls import urlpatterns
+from accounts.urls import urlpatterns as acc_urls
+from accounts.views import UserRegisterView
+from core.urls import urlpatterns as core_urls
 from utils.tests import test_view
 
 User = get_user_model()
@@ -10,7 +13,10 @@ User = get_user_model()
 
 class UserRegisterViewTest(TestCase):
     def setUp(self) -> None:
-        urlpatterns.append(path('url/', test_view, name='user-register-first-success'))
+        acc_urls.append(path('register/success/', test_view, name='user-register-success'))
+        acc_urls.append(path('register/confirm-email/<uidb64>/<token>/', test_view, name='user-confirm-email'))
+        core_urls.append(path('', test_view, name='home'))
+
         self.url = reverse('accounts:user-register')
         self.data = {
             'email': 'rick.sanchez@test.com',
@@ -38,4 +44,13 @@ class UserRegisterViewTest(TestCase):
     def test_view_redirects_to_correct_page_POST(self):
         response = self.client.post(self.url, self.data)
 
-        self.assertRedirects(response, reverse('accounts:user-register-first-success'))
+        self.assertRedirects(response, reverse('accounts:user-register-success'))
+
+    def test_view_send_mail_to_user_email_POST(self):
+        self.client.post(self.url, self.data)
+
+        self.assertIsNotNone(mail.outbox)
+
+    def test_view_uses_necessary_templates_make_male(self):
+        self.assertEqual(UserRegisterView.subject_template_name, 'accounts/subject_of_register_data_confirmation.html')
+        self.assertEqual(UserRegisterView.body_template_name, 'accounts/body_of_register_data_confirmation.html')
