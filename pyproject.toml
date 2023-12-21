@@ -32,9 +32,8 @@ extend-exclude = ["migrations"]
 [tool.ruff.format]
 quote-style = "single"
 
-[tool.isort]
-line_length = 120
-multi_line_output = 4
+[tool.ruff.lint.isort]
+known-local-folder = ["src"]
 
 [tool.mypy]
 ignore_missing_imports = true

@@ -15,13 +15,6 @@ repos:
         types: [ python ]
         args: []
 
-      - id: isort
-        name: isort
-        entry: isort
-        language: python
-        types: [ python ]
-        args: []
-
       - id: mypy
         name: mypy
         entry: mypy
