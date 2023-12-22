@@ -47,3 +47,25 @@ class UserRegisterViewTest(TestCase):
     def test_view_uses_necessary_templates_make_male(self):
         self.assertEqual(UserRegisterView.subject_template_name, 'accounts/subject_of_register_data_confirmation.html')
         self.assertEqual(UserRegisterView.body_template_name, 'accounts/body_of_register_data_confirmation.html')
+
+
+class UserRegisterSuccessViewTest(TestCase):
+    def setUp(self) -> None:
+        self.url = reverse('accounts:user-register-success')
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(self.url)
+
+        self.assertTemplateUsed(response, 'accounts/register_success.html')
+
+    def test_view_contains_correct_text(self):
+        expected_text = [
+            'You registered the account success, now you need to confirm your email.',
+            'We sent the email with the instructions to your email.',
+            'Please, check your email and follow the instructions.',
+        ]
+
+        response = self.client.get(self.url)
+
+        for text in expected_text:
+            self.assertContains(response, text)

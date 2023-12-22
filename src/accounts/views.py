@@ -56,3 +56,7 @@ class UserRegisterView(generic.FormView):
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': self.token_generator.make_token(user),
         }
+
+
+class UserRegisterSuccessView(generic.TemplateView):
+    template_name = 'accounts/register_success.html'
