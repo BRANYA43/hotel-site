@@ -1,22 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase
-from django.urls import reverse, path
+from django.urls import reverse
 
-from accounts.urls import urlpatterns as acc_urls
 from accounts.views import UserRegisterView
-from core.urls import urlpatterns as core_urls
-from utils.tests import test_view
 
 User = get_user_model()
 
 
 class UserRegisterViewTest(TestCase):
     def setUp(self) -> None:
-        acc_urls.append(path('register/success/', test_view, name='user-register-success'))
-        acc_urls.append(path('register/confirm-email/<uidb64>/<token>/', test_view, name='user-confirm-email'))
-        core_urls.append(path('', test_view, name='home'))
-
         self.url = reverse('accounts:user-register')
         self.data = {
             'email': 'rick.sanchez@test.com',

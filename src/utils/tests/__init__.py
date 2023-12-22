@@ -1,3 +1,3 @@
-from .test_views import test_view
+from .test_views import imitating_view
 
-__all__ = ['test_view']
+__all__ = ['imitating_view']

@@ -1,5 +1,5 @@
 from django.http import HttpResponse
 
 
-def test_view(request):
+def imitating_view(request):
     return HttpResponse(request)
