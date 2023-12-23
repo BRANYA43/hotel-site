@@ -1,8 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
 from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
+from accounts.tests import create_test_user
 from accounts.views import UserRegisterView
 
 User = get_user_model()
@@ -69,3 +73,35 @@ class UserRegisterSuccessViewTest(TestCase):
 
         for text in expected_text:
             self.assertContains(response, text)
+
+
+class UserConfirmEmailViewTest(TestCase):
+    def setUp(self) -> None:
+        self.user = create_test_user()
+        self.uidb64 = urlsafe_base64_encode(force_bytes(self.user.pk))
+        self.token = default_token_generator.make_token(self.user)
+        self.name_view = 'accounts:user-confirm-email'
+        self.url = reverse(self.name_view, args=[self.uidb64, self.token])
+
+    def test_view_redirects_to_login_if_uidb_and_token_are_valid(self):
+        response = self.client.get(self.url)
+
+        self.assertRedirects(response, reverse('accounts:user-login'))
+
+    def test_view_redirects_to_failure_if_uidb_is_invalid(self):
+        invalid_url = reverse(self.name_view, args=[b'invalid', self.token])
+        response = self.client.get(invalid_url)
+
+        self.assertRedirects(response, reverse('accounts:user-confirm-email-failure'))
+
+    def test_view_redirects_to_failure_if_token_is_invalid(self):
+        invalid_url = reverse(self.name_view, args=[self.uidb64, 'invalid'])
+        response = self.client.get(invalid_url)
+
+        self.assertRedirects(response, reverse('accounts:user-confirm-email-failure'))
+
+    def test_view_set_is_confirmed_email_as_true_if_user_is_valid(self):
+        self.client.get(self.url)
+        self.user.refresh_from_db()
+
+        self.assertTrue(self.user.is_confirmed_email)

@@ -2,11 +2,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.requests import RequestSite
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import generic
 
 from accounts import forms
@@ -60,3 +62,25 @@ class UserRegisterView(generic.FormView):
 
 class UserRegisterSuccessView(generic.TemplateView):
     template_name = 'accounts/register_success.html'
+
+
+class UserConfirmEmailView(generic.View):
+    token_generator = default_token_generator
+    redirect_to_login = reverse_lazy('accounts:user-login')
+    redirect_to_failure = reverse_lazy('accounts:user-confirm-email-failure')
+
+    def get(self, request, uidb64, token):
+        user = self.get_user(uidb64)
+        if self.token_generator.check_token(user, token):
+            user.is_confirmed_email = True
+            user.save()
+            return HttpResponseRedirect(self.redirect_to_login)
+        return HttpResponseRedirect(self.redirect_to_failure)
+
+    def get_user(self, uidb64):
+        try:
+            user_pk = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=user_pk)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist, ValidationError):
+            user = None
+        return user
