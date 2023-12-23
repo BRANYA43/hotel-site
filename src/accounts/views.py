@@ -84,3 +84,7 @@ class UserConfirmEmailView(generic.View):
         except (TypeError, ValueError, OverflowError, User.DoesNotExist, ValidationError):
             user = None
         return user
+
+
+class UserConfirmEmailFailureView(generic.TemplateView):
+    template_name = 'accounts/confirm_email_failure.html'

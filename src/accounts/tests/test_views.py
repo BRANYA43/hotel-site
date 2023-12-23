@@ -105,3 +105,20 @@ class UserConfirmEmailViewTest(TestCase):
         self.user.refresh_from_db()
 
         self.assertTrue(self.user.is_confirmed_email)
+
+
+class UserConfirmEmailFailureViewTest(TestCase):
+    def setUp(self) -> None:
+        self.url = reverse('accounts:user-confirm-email-failure')
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(self.url)
+
+        self.assertTemplateUsed(response, 'accounts/confirm_email_failure.html')
+
+    def test_view_contains_correct_text(self):
+        expected_text = ['Failure try of confirming email. Please, try once yet.']
+        response = self.client.get(self.url)
+
+        for text in expected_text:
+            self.assertContains(response, text)
