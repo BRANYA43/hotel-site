@@ -1,14 +1,6 @@
 from django.http import HttpRequest
 
-from accounts.forms import (
-    EXISTED_USER_ERROR_MESSAGE,
-    NOT_MATCH_PASSWORDS_ERROR_MESSAGE,
-    SAVE_ERROR_MESSAGE,
-    INVALID_CREDENTIAL_DATA_ERROR_MESSAGE,
-    NOT_CONFIRMED_EMAIL_ERROR_MESSAGE,
-    UserRegisterForm,
-    UserLoginForm,
-)
+from accounts import forms
 from accounts.tests import create_test_user
 from utils.cases import FormTestCase
 
@@ -20,7 +12,7 @@ class UserRegisterFormTest(FormTestCase):
             'password': 'qwe123!@#',
             'confirmed_password': 'qwe123!@#',
         }
-        self.Form = UserRegisterForm
+        self.Form = forms.UserRegisterForm
 
     def test_form_has_only_this_fields(self):
         expected_fields = [
@@ -52,14 +44,14 @@ class UserRegisterFormTest(FormTestCase):
         form = self.Form(data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, NOT_MATCH_PASSWORDS_ERROR_MESSAGE)
+        self.assertErrorDictHasError(form.errors, forms.NOT_MATCH_PASSWORDS_ERROR_MESSAGE)
 
     def test_form_is_invalid_if_user_is_existed(self):
         create_test_user(self.data['email'], self.data['password'])
         form = self.Form(data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, EXISTED_USER_ERROR_MESSAGE)
+        self.assertErrorDictHasError(form.errors, forms.EXISTED_USER_ERROR_MESSAGE)
 
     def test_form_does_not_save_user_if_data_is_invalid(self):
         self.data['password'] = ''
@@ -67,13 +59,13 @@ class UserRegisterFormTest(FormTestCase):
 
         self.assertFalse(form.is_valid())
 
-        with self.assertRaisesRegex(ValueError, SAVE_ERROR_MESSAGE):
+        with self.assertRaisesRegex(ValueError, forms.SAVE_ERROR_MESSAGE):
             form.save()
 
 
 class UserLoginFormTest(FormTestCase):
     def setUp(self) -> None:
-        self.Form = UserLoginForm
+        self.Form = forms.UserLoginForm
         self.data = {
             'email': 'rich.sanchez@gmail.com',
             'password': 'qwe123!@#',
@@ -90,14 +82,14 @@ class UserLoginFormTest(FormTestCase):
         form = self.Form(self.request, data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, INVALID_CREDENTIAL_DATA_ERROR_MESSAGE)
+        self.assertErrorDictHasError(form.errors, forms.INVALID_CREDENTIAL_DATA_ERROR_MESSAGE)
 
     def test_form_is_invalid_if_user_did_not_confirm_email(self):
         create_test_user(**self.data)
         form = self.Form(self.request, data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, NOT_CONFIRMED_EMAIL_ERROR_MESSAGE)
+        self.assertErrorDictHasError(form.errors, forms.NOT_CONFIRMED_EMAIL_ERROR_MESSAGE)
 
     def test_form_get_user_as_none_if_credential_data_is_invalid(self):
         form = self.Form(self.request, data=self.data)
