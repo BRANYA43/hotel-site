@@ -88,6 +88,10 @@ class UserRegisterContinueForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['user', 'first_name', 'last_name', 'birthday', 'telephone']
+        widgets = {
+            'user': forms.HiddenInput(),
+            'birthday': forms.DateInput(),
+        }
 
     @staticmethod
     def _clean_name(name: str, type: Literal['first', 'last']):

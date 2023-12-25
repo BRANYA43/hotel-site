@@ -1,3 +1,4 @@
+from django.forms import DateInput, HiddenInput
 from django.http import HttpRequest
 
 from accounts import forms
@@ -185,3 +186,11 @@ class UserRegisterContinueFormTest(FormTestCase):
 
         self.assertFalse(form.is_valid())
         self.assertFormError(form, 'telephone', forms.INVALID_TELEPHONE_ERROR_MESSAGE)
+
+    def test_user_field_is_hidden(self):
+        field = self.get_field(self.Form, 'user')
+        self.assertIsInstance(field.widget, HiddenInput)
+
+    def test_birthday_field_has_date_input_widget(self):
+        field = self.get_field(self.Form, 'birthday')
+        self.assertIsInstance(field.widget, DateInput)
