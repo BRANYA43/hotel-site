@@ -27,7 +27,7 @@ class UserRegisterForm(forms.Form):
 
         return email
 
-    def clean(self):
+    def clean_confirmed_password(self):
         password = self.cleaned_data.get('password')
         confirmed_password = self.cleaned_data.get('confirmed_password')
 

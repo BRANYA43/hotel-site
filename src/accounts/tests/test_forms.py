@@ -37,21 +37,21 @@ class UserRegisterFormTest(FormTestCase):
         form = self.Form(data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, 'This field is required.')
+        self.assertFormError(form, 'confirmed_password', 'This field is required.')
 
     def test_form_is_invalid_if_password_and_confirmed_password_is_not_match(self):
         self.data['password'] = '!@#123qwe'
         form = self.Form(data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, forms.NOT_MATCH_PASSWORDS_ERROR_MESSAGE)
+        self.assertFormError(form, 'confirmed_password', forms.NOT_MATCH_PASSWORDS_ERROR_MESSAGE)
 
     def test_form_is_invalid_if_user_is_existed(self):
         create_test_user(self.data['email'], self.data['password'])
         form = self.Form(data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, forms.EXISTED_USER_ERROR_MESSAGE)
+        self.assertFormError(form, 'email', forms.EXISTED_USER_ERROR_MESSAGE)
 
     def test_form_does_not_save_user_if_data_is_invalid(self):
         self.data['password'] = ''
@@ -82,14 +82,14 @@ class UserLoginFormTest(FormTestCase):
         form = self.Form(self.request, data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, forms.INVALID_CREDENTIAL_DATA_ERROR_MESSAGE)
+        self.assertFormError(form, None, forms.INVALID_CREDENTIAL_DATA_ERROR_MESSAGE)
 
     def test_form_is_invalid_if_user_did_not_confirm_email(self):
         create_test_user(**self.data)
         form = self.Form(self.request, data=self.data)
 
         self.assertFalse(form.is_valid())
-        self.assertErrorDictHasError(form.errors, forms.NOT_CONFIRMED_EMAIL_ERROR_MESSAGE)
+        self.assertFormError(form, None, forms.NOT_CONFIRMED_EMAIL_ERROR_MESSAGE)
 
     def test_form_get_user_as_none_if_credential_data_is_invalid(self):
         form = self.Form(self.request, data=self.data)
