@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.requests import RequestSite
 from django.contrib.sites.shortcuts import get_current_site
@@ -88,3 +88,18 @@ class UserConfirmEmailView(generic.View):
 
 class UserConfirmEmailFailureView(generic.TemplateView):
     template_name = 'accounts/confirm_email_failure.html'
+
+
+class UserLoginView(generic.FormView):
+    form_class = forms.UserLoginForm
+    success_url = reverse_lazy('accounts:user-account')
+    template_name = 'accounts/login_form.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def form_valid(self, form):
+        login(self.request, form.get_user())
+        return super().form_valid(form)

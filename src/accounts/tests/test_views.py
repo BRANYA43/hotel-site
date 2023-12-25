@@ -122,3 +122,49 @@ class UserConfirmEmailFailureViewTest(TestCase):
 
         for text in expected_text:
             self.assertContains(response, text)
+
+
+class UserLoginViewTest(TestCase):
+    def setUp(self) -> None:
+        self.url = reverse('accounts:user-login')
+        self.data = {
+            'email': 'rick.sanchez@test.com',
+            'password': 'qwe123!@#',
+        }
+        self.user = create_test_user(**self.data)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(self.url)
+
+        self.assertTemplateUsed(response, 'accounts/login_form.html')
+
+    def test_view_does_not_login_user_if_credential_data_is_invalid(self):
+        invalid_data = {'email': self.data['email'], 'password': 'wrong_password'}
+        response = self.client.post(self.url, invalid_data)
+
+        self.assertFalse(response.wsgi_request.user.is_authenticated)
+
+        invalid_data = {'email': 'wrong_email@test.com', 'password': self.data['password']}
+        response = self.client.post(self.url, invalid_data)
+
+        self.assertFalse(response.wsgi_request.user.is_authenticated)
+
+    def test_view_does_not_login_user_if_user_did_not_confirm_email(self):
+        response = self.client.post(self.url, self.data)
+
+        self.assertFalse(response.wsgi_request.user.is_authenticated)
+
+    def test_view_logins_user(self):
+        self.user.is_confirmed_email = True
+        self.user.save()
+
+        response = self.client.post(self.url, self.data)
+
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
+
+    def test_view_redirect_to_account(self):
+        self.user.is_confirmed_email = True
+        self.user.save()
+        response = self.client.post(self.url, self.data)
+
+        self.assertRedirects(response, reverse('accounts:user-account'))
