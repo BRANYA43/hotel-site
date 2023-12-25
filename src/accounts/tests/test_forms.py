@@ -106,3 +106,82 @@ class UserLoginFormTest(FormTestCase):
 
         self.assertIsNotNone(form_user)
         self.assertEqual(form_user.id, user.id)
+
+
+class UserRegisterContinueFormTest(FormTestCase):
+    def setUp(self) -> None:
+        user = create_test_user()
+        self.profile = user.profile
+        self.Form = forms.UserRegisterContinueForm
+        self.data = {
+            'user': user.pk,
+            'first_name': 'Rick',
+            'last_name': 'Sanchez',
+            'birthday': '1958-07-03',
+            'telephone': '+38 (050) 000 00 00',
+        }
+
+    def test_form_updates_user_profile_if_data_is_valid(self):
+        form = self.Form(instance=self.profile, data=self.data)
+
+        self.assertTrue(form.is_valid())
+
+        profile = form.save()
+
+        self.assertEqual(profile.first_name, self.data['first_name'])
+        self.assertEqual(profile.last_name, self.data['last_name'])
+        self.assertEqual(profile.birthday.strftime('%Y-%m-%d'), self.data['birthday'])
+        self.assertEqual(profile.telephone, self.data['telephone'])
+
+    def test_form_does_not_update_user_profile_if_data_is_invalid(self):
+        self.data = {}
+        form = self.Form(instance=self.profile, data=self.data)
+
+        self.assertFalse(form.is_valid())
+
+        self.assertFormError(form, 'first_name', 'This field is required.')
+        self.assertFormError(form, 'last_name', 'This field is required.')
+        self.assertFormError(form, 'birthday', 'This field is required.')
+        self.assertFormError(form, 'telephone', 'This field is required.')
+
+    @staticmethod
+    def get_cyrillic_and_latin_alfabet():
+        latin = ''.join(chr(code) for code in range(ord('a'), ord('z') + 1))
+        cyrillic = ''.join(chr(code) for code in range(ord('а'), ord('я') + 1))
+        cyrillic += 'іїєґ'
+
+        return latin + latin.upper() + cyrillic + cyrillic.upper()
+
+    def test_form_is_valid_if_first_and_last_names_contain_only_letters_of_cyrillic_or_latin(self):
+        self.data['first_name'] = self.get_cyrillic_and_latin_alfabet()
+        self.data['last_name'] = self.get_cyrillic_and_latin_alfabet()
+
+        form = self.Form(instance=self.profile, data=self.data)
+
+        self.assertTrue(form.is_valid())
+
+    def test_form_is_invalid_if_first_and_last_names_contain_not_only_letters(self):
+        self.data['first_name'] += '123!#$'
+        self.data['last_name'] += '123!#$'
+
+        form = self.Form(instance=self.profile, data=self.data)
+
+        self.assertFalse(form.is_valid())
+        self.assertFormError(form, 'first_name', forms.INVALID_NAME_ERROR_MESSAGE.format('first'))
+        self.assertFormError(form, 'last_name', forms.INVALID_NAME_ERROR_MESSAGE.format('last'))
+
+    def test_form_is_invalid_if_telephone_is_less_ten_numbers(self):
+        self.data['telephone'] = '+38 000 00 00'
+
+        form = self.Form(instance=self.profile, data=self.data)
+
+        self.assertFalse(form.is_valid())
+        self.assertFormError(form, 'telephone', forms.INVALID_TELEPHONE_ERROR_MESSAGE)
+
+    def test_form_is_invalid_if_telephone_is_more_twelve_numbers(self):
+        self.data['telephone'] += '0'
+
+        form = self.Form(instance=self.profile, data=self.data)
+
+        self.assertFalse(form.is_valid())
+        self.assertFormError(form, 'telephone', forms.INVALID_TELEPHONE_ERROR_MESSAGE)
