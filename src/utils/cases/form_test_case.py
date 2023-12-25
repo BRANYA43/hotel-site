@@ -10,8 +10,13 @@ class FormTestCase(TestCase):
         return form().fields[name]
 
     @staticmethod
-    def get_fields(form: Type[Form], *, only_names=False) -> list[Type[Field]] | list[str]:
-        fields = form().fields
+    def get_fields(
+        form: Type[Form],
+        *,
+        only_names=False,
+        **params,
+    ) -> list[Type[Field]] | list[str]:
+        fields = form(**params).fields
         if only_names:
             return list(fields.keys())
         return list(fields.values())

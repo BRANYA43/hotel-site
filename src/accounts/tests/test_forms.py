@@ -1,8 +1,13 @@
+from django.http import HttpRequest
+
 from accounts.forms import (
     EXISTED_USER_ERROR_MESSAGE,
     NOT_MATCH_PASSWORDS_ERROR_MESSAGE,
     SAVE_ERROR_MESSAGE,
+    INVALID_CREDENTIAL_DATA_ERROR_MESSAGE,
+    NOT_CONFIRMED_EMAIL_ERROR_MESSAGE,
     UserRegisterForm,
+    UserLoginForm,
 )
 from accounts.tests import create_test_user
 from utils.cases import FormTestCase
@@ -64,3 +69,48 @@ class UserRegisterFormTest(FormTestCase):
 
         with self.assertRaisesRegex(ValueError, SAVE_ERROR_MESSAGE):
             form.save()
+
+
+class UserLoginFormTest(FormTestCase):
+    def setUp(self) -> None:
+        self.Form = UserLoginForm
+        self.data = {
+            'email': 'rich.sanchez@gmail.com',
+            'password': 'qwe123!@#',
+        }
+        self.request = HttpRequest()
+
+    def test_form_has_necessary_fields(self):
+        necessary_fields = ['email', 'password']
+        fields = self.get_fields(self.Form, only_names=True, request=self.request)
+
+        self.assertFieldListEqual(fields, necessary_fields)
+
+    def test_form_is_invalid_if_credential_data_is_invalid(self):
+        form = self.Form(self.request, data=self.data)
+
+        self.assertFalse(form.is_valid())
+        self.assertErrorDictHasError(form.errors, INVALID_CREDENTIAL_DATA_ERROR_MESSAGE)
+
+    def test_form_is_invalid_if_user_did_not_confirm_email(self):
+        create_test_user(**self.data)
+        form = self.Form(self.request, data=self.data)
+
+        self.assertFalse(form.is_valid())
+        self.assertErrorDictHasError(form.errors, NOT_CONFIRMED_EMAIL_ERROR_MESSAGE)
+
+    def test_form_get_user_as_none_if_credential_data_is_invalid(self):
+        form = self.Form(self.request, data=self.data)
+        form.is_valid()
+
+        self.assertIsNone(form.get_user())
+
+    def test_form_get_user_if_credential_data_is_valid(self):
+        user = create_test_user(**self.data)
+        form = self.Form(self.request, data=self.data)
+        form.is_valid()
+
+        form_user = form.get_user()
+
+        self.assertIsNotNone(form_user)
+        self.assertEqual(form_user.id, user.id)
