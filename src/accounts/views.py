@@ -114,3 +114,21 @@ class UserRegisterContinueView(mixins.LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user.profile
+
+
+class UserAccountView(mixins.LoginRequiredMixin, generic.UpdateView):
+    model = Profile
+    form_class = forms.UserAccountForm
+    template_name = 'accounts/account_form.html'
+    success_url = reverse_lazy('accounts:user-account')
+    register_continue_url = reverse_lazy('accounts:user-register-continue')
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
+    def get(self, request, *args, **kwargs):
+        profile = self.get_object()
+        if not profile.has_necessary_data:
+            return HttpResponseRedirect(self.register_continue_url)
+        else:
+            return super().get(request, *args, **kwargs)
