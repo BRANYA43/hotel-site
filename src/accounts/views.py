@@ -67,16 +67,16 @@ class UserRegisterSuccessView(generic.TemplateView):
 
 class UserConfirmEmailView(generic.View):
     token_generator = default_token_generator
-    redirect_to_login = reverse_lazy('accounts:user-login')
-    redirect_to_failure = reverse_lazy('accounts:user-confirm-email-failure')
+    login_url = reverse_lazy('accounts:user-login')
+    failure_url = reverse_lazy('accounts:user-confirm-email-failure')
 
     def get(self, request, uidb64, token):
         user = self.get_user(uidb64)
         if self.token_generator.check_token(user, token):
             user.is_confirmed_email = True
             user.save()
-            return HttpResponseRedirect(self.redirect_to_login)
-        return HttpResponseRedirect(self.redirect_to_failure)
+            return HttpResponseRedirect(self.login_url)
+        return HttpResponseRedirect(self.failure_url)
 
     def get_user(self, uidb64):
         try:
