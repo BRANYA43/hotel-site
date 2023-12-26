@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, mixins
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.requests import RequestSite
 from django.contrib.sites.shortcuts import get_current_site
@@ -12,6 +12,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import generic
 
 from accounts import forms
+from accounts.models import Profile
 
 User = get_user_model()
 
@@ -103,3 +104,13 @@ class UserLoginView(generic.FormView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super().form_valid(form)
+
+
+class UserRegisterContinueView(mixins.LoginRequiredMixin, generic.UpdateView):
+    model = Profile
+    form_class = forms.UserRegisterContinueForm
+    template_name = 'accounts/register_continue_form.html'
+    success_url = reverse_lazy('accounts:user-account')
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile

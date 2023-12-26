@@ -168,3 +168,55 @@ class UserLoginViewTest(TestCase):
         response = self.client.post(self.url, self.data)
 
         self.assertRedirects(response, reverse('accounts:user-account'))
+
+
+class UserRegisterContinueViewTest(TestCase):
+    def setUp(self) -> None:
+        self.url = reverse('accounts:user-register-continue')
+        self.user = create_test_user()
+        self.profile = self.user.profile
+        self.client.force_login(self.user)
+        self.data = {
+            'user': self.user.pk,
+            'first_name': 'Rick',
+            'last_name': 'Sanchez',
+            'birthday': '1958-07-03',
+            'telephone': '+38 (050) 000 00 00',
+        }
+
+    def test_view_redirects_to_login_page_if_user_is_not_logged(self):
+        self.client.logout()
+        expected_url = reverse('accounts:user-login') + '?next=' + reverse('accounts:user-register-continue')
+        response = self.client.get(self.url)
+
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+        self.assertRedirects(response, expected_url)
+
+    def test_view_redirects_to_account_page(self):
+        response = self.client.post(self.url, self.data)
+
+        self.assertRedirects(response, reverse('accounts:user-account'))
+
+    def test_view_updates_user_profile(self):
+        self.client.post(self.url, self.data)
+        self.profile.refresh_from_db()
+
+        self.assertEqual(self.profile.first_name, self.data['first_name'])
+        self.assertEqual(self.profile.last_name, self.data['last_name'])
+        self.assertEqual(self.profile.birthday.strftime('%Y-%m-%d'), self.data['birthday'])
+        self.assertEqual(self.profile.telephone, self.data['telephone'])
+
+    def test_view_does_not_update_user_profile_if_data_is_invalid(self):
+        invalid_data = {
+            'first_name': 'Rick123',
+            'last_name': 'Sanchez@!#',
+            'birthday': '1958-07-03dasf',
+            'telephone': '+38 (050)00 00',
+        }
+        self.client.post(self.url, invalid_data)
+        self.profile.refresh_from_db()
+
+        self.assertIsNone(self.profile.first_name)
+        self.assertIsNone(self.profile.last_name)
+        self.assertIsNone(self.profile.birthday)
+        self.assertIsNone(self.profile.telephone)
