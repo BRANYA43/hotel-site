@@ -32,7 +32,7 @@ class UserRegisterFormTest(FormTestCase):
         self.assertEqual(user.email, self.data['email'])
         self.assertTrue(user.check_password(self.data['password']))
 
-    def test_form_is_invalid_if_password_or_confirmed_password_is_empty(self):
+    def test_form_is_invalid_if_password_or_confirmed_password_are_empty(self):
         self.data['password'] = ''
         self.data['confirmed_password'] = ''
         form = self.Form(data=self.data)
@@ -40,7 +40,7 @@ class UserRegisterFormTest(FormTestCase):
         self.assertFalse(form.is_valid())
         self.assertFormError(form, 'confirmed_password', 'This field is required.')
 
-    def test_form_is_invalid_if_password_and_confirmed_password_is_not_match(self):
+    def test_form_is_invalid_if_password_and_confirmed_password_are_not_match(self):
         self.data['password'] = '!@#123qwe'
         form = self.Form(data=self.data)
 
@@ -73,11 +73,11 @@ class UserLoginFormTest(FormTestCase):
         }
         self.request = HttpRequest()
 
-    def test_form_has_necessary_fields(self):
-        necessary_fields = ['email', 'password']
+    def test_form_has_this_fields(self):
+        expected_fields = ['email', 'password']
         fields = self.get_fields(self.Form, only_names=True, request=self.request)
 
-        self.assertFieldListEqual(fields, necessary_fields)
+        self.assertFieldListEqual(fields, expected_fields)
 
     def test_form_is_invalid_if_credential_data_is_invalid(self):
         form = self.Form(self.request, data=self.data)
@@ -122,7 +122,7 @@ class ProfileUpdateFormMixinTest(FormTestCase):
             'telephone': '+38 (050) 000 00 00',
         }
 
-    def test_form_updates_user_profile_if_data_is_valid(self):
+    def test_form_updates_user_profile(self):
         form = self.Form(instance=self.profile, data=self.data)
 
         self.assertTrue(form.is_valid())
@@ -134,7 +134,7 @@ class ProfileUpdateFormMixinTest(FormTestCase):
         self.assertEqual(profile.birthday.strftime('%Y-%m-%d'), self.data['birthday'])
         self.assertEqual(profile.telephone, self.data['telephone'])
 
-    def test_form_does_not_update_user_profile_if_data_is_invalid(self):
+    def test_form_doesnt_update_user_profile_if_data_is_invalid(self):
         self.data = {}
         form = self.Form(instance=self.profile, data=self.data)
 

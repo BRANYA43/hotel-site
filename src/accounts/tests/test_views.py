@@ -50,7 +50,7 @@ class UserRegisterViewTest(TestCase):
 
         self.assertIsNotNone(mail.outbox)
 
-    def test_view_uses_necessary_templates_make_male(self):
+    def test_view_uses_necessary_templates_make_mail(self):
         self.assertEqual(UserRegisterView.subject_template_name, 'accounts/subject_of_register_data_confirmation.html')
         self.assertEqual(UserRegisterView.body_template_name, 'accounts/body_of_register_data_confirmation.html')
 
@@ -85,24 +85,24 @@ class UserConfirmEmailViewTest(TestCase):
         self.name_view = 'accounts:user-confirm-email'
         self.url = reverse(self.name_view, args=[self.uidb64, self.token])
 
-    def test_view_redirects_to_login_if_uidb_and_token_are_valid(self):
+    def test_view_redirects_to_login_page_if_uidb_and_token_are_valid(self):
         response = self.client.get(self.url)
 
         self.assertRedirects(response, reverse('accounts:user-login'))
 
-    def test_view_redirects_to_failure_if_uidb_is_invalid(self):
+    def test_view_redirects_to_failure_page_if_uidb_is_invalid(self):
         invalid_url = reverse(self.name_view, args=[b'invalid', self.token])
         response = self.client.get(invalid_url)
 
         self.assertRedirects(response, reverse('accounts:user-confirm-email-failure'))
 
-    def test_view_redirects_to_failure_if_token_is_invalid(self):
+    def test_view_redirects_to_failure_page_if_token_is_invalid(self):
         invalid_url = reverse(self.name_view, args=[self.uidb64, 'invalid'])
         response = self.client.get(invalid_url)
 
         self.assertRedirects(response, reverse('accounts:user-confirm-email-failure'))
 
-    def test_view_set_is_confirmed_email_as_true_if_user_is_valid(self):
+    def test_view_confirms_email_of_user_if_user_is_valid(self):
         self.client.get(self.url)
         self.user.refresh_from_db()
 
@@ -140,7 +140,7 @@ class UserLoginViewTest(TestCase):
 
         self.assertTemplateUsed(response, 'accounts/login_form.html')
 
-    def test_view_does_not_login_user_if_credential_data_is_invalid(self):
+    def test_view_doesnt_login_user_if_credential_data_is_invalid(self):
         invalid_data = {'email': self.data['email'], 'password': 'wrong_password'}
         response = self.client.post(self.url, invalid_data)
 
@@ -151,7 +151,7 @@ class UserLoginViewTest(TestCase):
 
         self.assertFalse(response.wsgi_request.user.is_authenticated)
 
-    def test_view_does_not_login_user_if_user_did_not_confirm_email(self):
+    def test_view_doesnt_login_user_if_user_dont_confirm_email(self):
         response = self.client.post(self.url, self.data)
 
         self.assertFalse(response.wsgi_request.user.is_authenticated)
@@ -165,7 +165,7 @@ class UserLoginViewTest(TestCase):
         self.assertTrue(response.wsgi_request.user.is_authenticated)
 
     @patch('accounts.models.Profile.has_necessary_data', return_value=True)
-    def test_view_redirect_to_account(self, mock):
+    def test_view_redirects_to_account_page(self, mock):
         self.user.is_confirmed_email = True
         self.user.save()
         response = self.client.post(self.url, self.data)
@@ -192,7 +192,7 @@ class UserRegisterContinueViewTest(TestCase):
 
         self.assertTemplateUsed(response, 'accounts/register_continue_form.html')
 
-    def test_view_redirects_to_login_page_if_user_is_not_logged(self):
+    def test_view_redirects_to_login_page_if_user_dont_login(self):
         self.client.logout()
         expected_url = reverse('accounts:user-login') + '?next=' + reverse('accounts:user-register-continue')
         response = self.client.get(self.url)
@@ -214,7 +214,7 @@ class UserRegisterContinueViewTest(TestCase):
         self.assertEqual(self.profile.birthday.strftime('%Y-%m-%d'), self.data['birthday'])
         self.assertEqual(self.profile.telephone, self.data['telephone'])
 
-    def test_view_does_not_update_user_profile_if_data_is_invalid(self):
+    def test_view_doesnt_update_user_profile_if_data_is_invalid(self):
         invalid_data = {
             'first_name': 'Rick123',
             'last_name': 'Sanchez@!#',
@@ -250,7 +250,7 @@ class UserAccountViewTest(TestCase):
 
         self.assertTemplateUsed(response, 'accounts/account_form.html')
 
-    def test_view_redirects_to_login_page_if_user_is_not_logged(self):
+    def test_view_redirects_to_login_page_if_user_dont_login(self):
         self.client.logout()
         expected_url = reverse('accounts:user-login') + '?next=' + reverse('accounts:user-account')
         response = self.client.get(self.url)
@@ -277,7 +277,7 @@ class UserAccountViewTest(TestCase):
         self.assertEqual(self.profile.birthday.strftime('%Y-%m-%d'), self.data['birthday'])
         self.assertEqual(self.profile.telephone, self.data['telephone'])
 
-    def test_view_does_not_update_user_profile_if_data_is_invalid(self):
+    def test_view_doesnt_update_user_profile_if_data_is_invalid(self):
         invalid_data = {
             'first_name': 'Rick123',
             'last_name': 'Sanchez@!#',

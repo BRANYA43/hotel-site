@@ -13,7 +13,7 @@ class UserManagerTest(TestCase):
         self.manager = UserManager()
         self.manager.model = User
 
-    def test_create_user_makes_correct_user_only_by_email_and_password(self):
+    def test_manager_creates_user_by_only_email_and_password(self):
         user = self.manager.create_user(**self.data)
 
         self.assertEqual(User.objects.count(), 1)
@@ -25,7 +25,7 @@ class UserManagerTest(TestCase):
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
 
-    def test_create_superuser_makes_correct_user(self):
+    def test_manager_creates_superuser(self):
         user = self.manager.create_superuser(**self.data)
 
         self.assertEqual(User.objects.count(), 1)
@@ -37,12 +37,12 @@ class UserManagerTest(TestCase):
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)
 
-    def test_create_user_raise_EmptyEmailError(self):
+    def test_create_user_raises_EmptyEmailError(self):
         self.data['email'] = ''
         with self.assertRaisesRegex(ValueError, EMAIL_ERROR_MESSAGE):
             self.manager.create_superuser(**self.data)
 
-    def test_create_superuser_raise_EmptyEmailError(self):
+    def test_create_superuser_raises_EmptyEmailError(self):
         self.data['email'] = ''
         with self.assertRaisesRegex(ValueError, EMAIL_ERROR_MESSAGE):
             self.manager.create_superuser(**self.data)
