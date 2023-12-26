@@ -109,11 +109,11 @@ class UserLoginFormTest(FormTestCase):
         self.assertEqual(form_user.id, user.id)
 
 
-class UserRegisterContinueFormTest(FormTestCase):
+class ProfileUpdateFormMixinTest(FormTestCase):
     def setUp(self) -> None:
         user = create_test_user()
         self.profile = user.profile
-        self.Form = forms.UserRegisterContinueForm
+        self.Form = forms.ProfileUpdateFormMixin
         self.data = {
             'user': user.pk,
             'first_name': 'Rick',
@@ -194,3 +194,8 @@ class UserRegisterContinueFormTest(FormTestCase):
     def test_birthday_field_has_date_input_widget(self):
         field = self.get_field(self.Form, 'birthday')
         self.assertIsInstance(field.widget, DateInput)
+
+
+class UserRegisterContinueFormTest(FormTestCase):
+    def test_form_inherits_ProfileUpdateFormMixin(self):
+        self.assertTrue(issubclass(forms.UserRegisterContinueForm, forms.ProfileUpdateFormMixin))

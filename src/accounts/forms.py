@@ -84,7 +84,7 @@ INVALID_TELEPHONE_ERROR_MESSAGE = (
 INVALID_NAME_ERROR_MESSAGE = 'Invalid {0} name. Please, enter a correct your {0} name, use only letters.'
 
 
-class UserRegisterContinueForm(forms.ModelForm):
+class ProfileUpdateFormMixin(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['user', 'first_name', 'last_name', 'birthday', 'telephone']
@@ -123,3 +123,8 @@ class UserRegisterContinueForm(forms.ModelForm):
                 tel = tel[2:]
 
         return f'+38 ({tel[:3]}) {tel[3:6]} {tel[6:8]} {tel[8:10]}'
+
+
+class UserRegisterContinueForm(ProfileUpdateFormMixin):
+    class Meta(ProfileUpdateFormMixin.Meta):
+        pass
