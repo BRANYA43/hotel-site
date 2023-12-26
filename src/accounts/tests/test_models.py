@@ -122,3 +122,29 @@ class ProfileModelTest(ModelTestCase):
         user.delete()
 
         self.assertEqual(Profile.objects.count(), 0)
+
+    def test_has_necessary_data_returns_false_if_model_data_is_empty(self):
+        profile = Profile()
+
+        self.assertFalse(profile.has_necessary_data)
+
+    def test_has_necessary_data_returns_false_if_any_model_field_is_none(self):
+        data = {
+            'last_name': 'Sanchez',
+            'birthday': '1958-07-03',
+            'telephone': '+38 (050) 000 00 00',
+        }
+        profile = Profile(**data)
+
+        self.assertFalse(profile.has_necessary_data)
+
+    def test_has_necessary_data_returns_true_if_model_data_is_full(self):
+        data = {
+            'first_name': 'Rick',
+            'last_name': 'Sanchez',
+            'birthday': '1958-07-03',
+            'telephone': '+38 (050) 000 00 00',
+        }
+        profile = Profile(**data)
+
+        self.assertTrue(profile.has_necessary_data)

@@ -13,6 +13,10 @@ class Profile(models.Model):
     birthday = models.DateField(null=True)
     telephone = models.CharField(max_length=20, null=True)
 
+    @property
+    def has_necessary_data(self):
+        return all([self.first_name, self.last_name, self.birthday, self.telephone])
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
