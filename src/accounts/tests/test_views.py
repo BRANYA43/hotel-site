@@ -184,6 +184,11 @@ class UserRegisterContinueViewTest(TestCase):
             'telephone': '+38 (050) 000 00 00',
         }
 
+    def test_view_uses_correct_template(self):
+        response = self.client.get(self.url)
+
+        self.assertTemplateUsed(response, 'accounts/register_continue_form.html')
+
     def test_view_redirects_to_login_page_if_user_is_not_logged(self):
         self.client.logout()
         expected_url = reverse('accounts:user-login') + '?next=' + reverse('accounts:user-register-continue')
