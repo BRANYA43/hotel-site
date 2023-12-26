@@ -199,3 +199,8 @@ class ProfileUpdateFormMixinTest(FormTestCase):
 class UserRegisterContinueFormTest(FormTestCase):
     def test_form_inherits_ProfileUpdateFormMixin(self):
         self.assertTrue(issubclass(forms.UserRegisterContinueForm, forms.ProfileUpdateFormMixin))
+
+
+class UserAccountFormTest(FormTestCase):
+    def test_form_inherits_ProfileUpdateFormMixin(self):
+        self.assertTrue(issubclass(forms.UserAccountForm, forms.ProfileUpdateFormMixin))

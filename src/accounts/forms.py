@@ -128,3 +128,8 @@ class ProfileUpdateFormMixin(forms.ModelForm):
 class UserRegisterContinueForm(ProfileUpdateFormMixin):
     class Meta(ProfileUpdateFormMixin.Meta):
         pass
+
+
+class UserAccountForm(ProfileUpdateFormMixin):
+    class Meta(ProfileUpdateFormMixin.Meta):
+        pass
