@@ -87,6 +87,10 @@ class UserConfirmEmailView(generic.View):
         return user
 
 
+class UserConfirmEmailSuccessView(generic.TemplateView):
+    template_name = 'accounts/confirm_email_success.html'
+
+
 class UserConfirmEmailFailureView(generic.TemplateView):
     template_name = 'accounts/confirm_email_failure.html'
 
