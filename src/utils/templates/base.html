@@ -8,7 +8,12 @@
 <body>
     <header>
         <nav id="id_navbar">
-            <a id="id_registering_link" href="{% url 'accounts:user-register' %}">Sing up</a>
+            {% if user.is_authenticated %}
+                <a id="id_logout_link" href="{% url 'accounts:user-logout' %}">Sing out</a>
+            {% else %}
+                <a id="id_registering_link" href="{% url 'accounts:user-register' %}">Sing up</a>
+                <a id="id_login_link" href="{% url 'accounts:user-login' %}">Sing in</a>
+            {% endif %}
         </nav>
     </header>
     <main>

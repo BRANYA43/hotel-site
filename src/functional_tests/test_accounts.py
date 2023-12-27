@@ -3,6 +3,7 @@ import re
 from django.contrib.auth import get_user_model
 from django.core import mail
 
+from accounts.tests import create_test_user
 from functional_tests.fucntional_test import FunctionalTest
 
 User = get_user_model()
@@ -50,7 +51,7 @@ class AccountsAppTest(FunctionalTest):
         # and click on sing in.
         self.wait_for(lambda: self.browser.find_element(value='id_success_message'))
 
-        self.browser.find_element(value='id_login_link').click()
+        self.browser.find_element(value='id_login_message_link').click()
 
         # User inputs his credential data and click on sing in
         self.wait_for(lambda: self.browser.find_element(value='id_login_form'))
@@ -83,3 +84,50 @@ class AccountsAppTest(FunctionalTest):
         self.assertEqual(last_name, self.user_data['last_name'])
         self.assertEqual(birthday, self.user_data['birthday'])
         self.assertEqual(telephone, self.user_data['telephone'])
+
+    def test_user_can_login_and_logout(self):
+        user = create_test_user()
+        user.is_confirmed_email = True
+        user.save()
+        profile = user.profile
+        profile.first_name = self.user_data['first_name']
+        profile.last_name = self.user_data['last_name']
+        profile.birthday = self.user_data['birthday']
+        profile.telephone = self.user_data['telephone']
+        profile.save()
+
+        # User goes to site to start registration
+        self.browser.get(self.live_server_url)
+
+        # User finds a login link in a navbar and clicks on it
+        self.browser.find_element(value='id_navbar').find_element(value='id_login_link').click()
+
+        # User inputs his credential data and click on sing in
+        self.wait_for(lambda: self.browser.find_element(value='id_login_form'))
+
+        self.enter_to_input_field(self.user_data['email'], value='id_email')
+        self.enter_to_input_field(self.user_data['password'], value='id_password')
+
+        self.browser.find_element(value='id_login_button').click()
+
+        # User follows to account page and see his account data
+        self.wait_for(lambda: self.browser.find_element(value='id_account_form'))
+
+        first_name = self.browser.find_element(value='id_first_name').get_attribute('value')
+        last_name = self.browser.find_element(value='id_last_name').get_attribute('value')
+        birthday = self.browser.find_element(value='id_birthday').get_attribute('value')
+        telephone = self.browser.find_element(value='id_telephone').get_attribute('value')
+
+        self.assertEqual(first_name, self.user_data['first_name'])
+        self.assertEqual(last_name, self.user_data['last_name'])
+        self.assertEqual(birthday, self.user_data['birthday'])
+        self.assertEqual(telephone, self.user_data['telephone'])
+
+        # User finds logout link of navbar and clicks on it
+        self.browser.find_element(value='id_navbar').find_element(value='id_logout_link').click()
+
+        # User inputs his credential data and click on sing in
+        self.wait_for(lambda: self.browser.find_element(value='id_login_form'))
+
+        # User see login link of navbar
+        self.browser.find_element(value='id_navbar').find_element(value='id_login_link')
