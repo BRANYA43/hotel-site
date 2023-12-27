@@ -1,7 +1,8 @@
-from django.contrib.auth import get_user_model
-from django.urls import reverse
+import re
 
-from accounts.tests import create_test_user
+from django.contrib.auth import get_user_model
+from django.core import mail
+
 from functional_tests.fucntional_test import FunctionalTest
 
 User = get_user_model()
@@ -15,57 +16,70 @@ class AccountsAppTest(FunctionalTest):
             'password': 'qwe123!@#',
             'first_name': 'Rick',
             'last_name': 'Sanchez',
-            'birthday': '07-03-1958',
-            'telephone': '+380 000 00 00',
+            'birthday': '1958-07-03',
+            'telephone': '+38 (050) 000 00 00',
         }
 
-    def test_user_pass_first_step_of_registration(self):
-        url = self.live_server_url + reverse('user-register')
+    def test_user_registers_on_site(self):
+        # User goes to site to start registration
+        self.browser.get(self.live_server_url)
+
+        # User finds a registering link in a navbar and clicks on it
+        self.browser.find_element(value='id_navbar').find_element(value='id_registering_link').click()
+
+        # User inputs his credentials data and clicks on sing up
+        self.wait_for(lambda: self.browser.find_element(value='id_register_form'))
+
+        self.enter_to_input_field(self.user_data['email'], value='id_email')
+        self.enter_to_input_field(self.user_data['password'], value='id_password')
+        self.enter_to_input_field(self.user_data['password'], value='id_confirmed_password')
+
+        self.browser.find_element(value='id_registering_button').click()
+
+        # User follows to a page with a message of registering success. User follows instruction from the message.
+        # User checks his email and clicks on the link for confirming email.
+        self.wait_for(lambda: self.browser.find_element(value='id_success_message'))
+
+        self.assertEqual(len(mail.outbox), 1)
+
+        body = mail.outbox[0].body
+        url = re.search(r'(http|https)://[^/]+/account/confirm-email/[^/]+/[^/]+/', body).group()
         self.browser.get(url)
 
-        input_box = self.browser.find_element('id_email')
-        input_box.send_keys(self.user_data['email'])
+        # User follows to a page with a message of confirming email success. User follows instruction from the message
+        # and click on sing in.
+        self.wait_for(lambda: self.browser.find_element(value='id_success_message'))
 
-        input_box = self.browser.find_element('id_password')
-        input_box.send_keys(self.user_data['password'])
+        self.browser.find_element(value='id_login_link').click()
 
-        input_box = self.browser.find_element('id_confirmed_password')
-        input_box.send_keys(self.user_data['password'])
+        # User inputs his credential data and click on sing in
+        self.wait_for(lambda: self.browser.find_element(value='id_login_form'))
 
-        button = self.browser.find_element('id_sing_up')
-        button.click()
+        self.enter_to_input_field(self.user_data['email'], value='id_email')
+        self.enter_to_input_field(self.user_data['password'], value='id_password')
 
-        text = self.wait_for(
-            lambda x: self.browser.find_element('id_success_message')  # not raise
-        )
-        expected_text = (
-            'You finished first step of registration. We sent to you the instruction for confirmed your '
-            'email. Check your email.'
-        )
-        self.assertEqual(text.text, expected_text)
+        self.browser.find_element(value='id_login_button').click()
 
-    def test_user_pass_second_step_of_registration(self):
-        user = create_test_user()
-        user.is_confirmed_email = True
+        # This is first login for User, so he must enter additional data to finish registration and clicks on finishing
+        # button
+        self.wait_for(lambda: self.browser.find_element(value='id_register_continue_form'))
 
-        url = self.live_server_url + reverse('user-register-continue', args=[user.id])
-        self.browser.get(url)
+        self.enter_to_input_field(self.user_data['first_name'], value='id_first_name')
+        self.enter_to_input_field(self.user_data['last_name'], value='id_last_name')
+        self.enter_to_input_field(self.user_data['birthday'], value='id_birthday')
+        self.enter_to_input_field(self.user_data['telephone'], value='id_telephone')
 
-        input_box = self.browser.find_element('id_first_name')
-        input_box.send_keys(self.user_data['first_name'])
+        self.browser.find_element(value='id_finishing_button').click()
 
-        input_box = self.browser.find_element('id_last_name')
-        input_box.send_keys(self.user_data['last_name'])
+        # User follows to his account and checks his input data
+        self.wait_for(lambda: self.browser.find_element(value='id_account_form'))
 
-        input_box = self.browser.find_element('id_birthday')
-        input_box.send_keys(self.user_data['birthday'])
+        first_name = self.browser.find_element(value='id_first_name').get_attribute('value')
+        last_name = self.browser.find_element(value='id_last_name').get_attribute('value')
+        birthday = self.browser.find_element(value='id_birthday').get_attribute('value')
+        telephone = self.browser.find_element(value='id_telephone').get_attribute('value')
 
-        input_box = self.browser.find_element('id_telephone')
-        input_box.send_keys(self.user_data['telephone'])
-
-        button = self.browser.find_element('id_finish')
-        button.click()
-
-        self.wait_for(
-            lambda: self.browser.find_element('id_avatar')  # not raise
-        )
+        self.assertEqual(first_name, self.user_data['first_name'])
+        self.assertEqual(last_name, self.user_data['last_name'])
+        self.assertEqual(birthday, self.user_data['birthday'])
+        self.assertEqual(telephone, self.user_data['telephone'])

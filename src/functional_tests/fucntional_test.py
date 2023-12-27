@@ -4,6 +4,7 @@ from unittest import TestLoader
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
 
 MAX_WAITED_TIME = 10
 
@@ -48,3 +49,6 @@ class FunctionalTest(LiveServerTestCase):
     @wait
     def wait_for(self, fn):
         return fn()
+
+    def enter_to_input_field(self, input_value: str, by=By.ID, value: str | None = None):
+        self.browser.find_element(by, value).send_keys(input_value)
