@@ -85,10 +85,10 @@ class UserConfirmEmailViewTest(TestCase):
         self.name_view = 'accounts:user-confirm-email'
         self.url = reverse(self.name_view, args=[self.uidb64, self.token])
 
-    def test_view_redirects_to_login_page_if_uidb_and_token_are_valid(self):
+    def test_view_redirects_to_success_page_if_uidb_and_token_are_valid(self):
         response = self.client.get(self.url)
 
-        self.assertRedirects(response, reverse('accounts:user-login'))
+        self.assertRedirects(response, reverse('accounts:user-confirm-email-success'))
 
     def test_view_redirects_to_failure_page_if_uidb_is_invalid(self):
         invalid_url = reverse(self.name_view, args=[b'invalid', self.token])
