@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model, login, mixins
+from django.contrib.auth import get_user_model, login, mixins, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.requests import RequestSite
 from django.contrib.sites.shortcuts import get_current_site
@@ -108,6 +108,14 @@ class UserLoginView(generic.FormView):
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super().form_valid(form)
+
+
+class UserLogoutView(mixins.LoginRequiredMixin, generic.View):
+    success_url = reverse_lazy('accounts:user-login')
+
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(self.success_url)
 
 
 class UserRegisterContinueView(mixins.LoginRequiredMixin, generic.UpdateView):

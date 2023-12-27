@@ -12,5 +12,6 @@ urlpatterns = [
     path('confirm-email/success/', views.UserConfirmEmailSuccessView.as_view(), name='user-confirm-email-success'),
     path('confirm-email/failure/', views.UserConfirmEmailFailureView.as_view(), name='user-confirm-email-failure'),
     path('sing-in/', views.UserLoginView.as_view(), name='user-login'),
+    path('sing-out/', views.UserLogoutView.as_view(), name='user-logout'),
     path('', views.UserAccountView.as_view(), name='user-account'),
 ]

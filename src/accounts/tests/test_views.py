@@ -190,6 +190,31 @@ class UserLoginViewTest(TestCase):
         self.assertRedirects(response, reverse('accounts:user-account'))
 
 
+class UserLogoutViewTest(TestCase):
+    def setUp(self) -> None:
+        self.url = reverse('accounts:user-logout')
+        self.user = create_test_user()
+        self.client.force_login(self.user)
+
+    def test_view_redirects_to_login(self):
+        response = self.client.get(self.url)
+
+        self.assertRedirects(response, reverse('accounts:user-login'))
+
+    def test_view_redirects_to_login_page_if_user_dont_login(self):
+        self.client.logout()
+        expected_url = reverse('accounts:user-login') + '?next=' + self.url
+        response = self.client.get(self.url)
+
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+        self.assertRedirects(response, expected_url)
+
+    def test_view_logouts_user(self):
+        response = self.client.get(self.url)
+
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+
+
 class UserRegisterContinueViewTest(TestCase):
     def setUp(self) -> None:
         self.url = reverse('accounts:user-register-continue')
