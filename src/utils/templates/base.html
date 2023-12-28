@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block links %}{% endblock %}
+    <title>{% block title %}Title{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav id="id_navbar">
+            {% if user.is_authenticated %}
+                <a id="id_logout_link" href="{% url 'accounts:user-logout' %}">Sing out</a>
+            {% else %}
+                <a id="id_registering_link" href="{% url 'accounts:user-register' %}">Sing up</a>
+                <a id="id_login_link" href="{% url 'accounts:user-login' %}">Sing in</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+            <p>Some content</p>
+        {% endblock %}
+    </main>
+    <footer></footer>
+
+</body>
+</html>

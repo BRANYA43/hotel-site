@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<form id="id_register_continue_form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button id="id_finishing_button" type="submit">Finish</button>
+</form>
+{% endblock %}

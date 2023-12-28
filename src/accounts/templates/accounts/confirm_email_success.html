@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<p id="id_success_message">
+    You success confirmed your email.
+    Please, follow to <a id="id_login_message_link" href="{% url 'accounts:user-login' %}">sing in</a>.
+</p>
+{% endblock %}
