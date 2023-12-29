@@ -29,3 +29,4 @@ class Room(models.Model):
 class Number(models.Model):
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True)
     number = models.IntegerField(unique=True)
+    is_available = models.BooleanField(default=True)

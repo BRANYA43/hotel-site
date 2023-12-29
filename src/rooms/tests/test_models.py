@@ -72,3 +72,7 @@ class NumberModelTest(ModelTestCase):
         number.refresh_from_db()
 
         self.assertIsNone(number.room)
+
+    def test_number_is_available_by_default(self):
+        field = self.get_field(self.Model, 'is_available')
+        self.assertTrue(field.default)
