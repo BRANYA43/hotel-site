@@ -13,6 +13,8 @@ class RoomModelTest(ModelTestCase):
             'status',
             'single_beds',
             'double_beds',
+            'updated',
+            'created',
         ]
 
         self.assertModelHasNecessaryFields(self.Model, necessary_fields)
@@ -46,6 +48,8 @@ class NumberModelTest(ModelTestCase):
         necessary_fields = [
             'room',
             'number',
+            'updated',
+            'created',
         ]
 
         self.assertModelHasNecessaryFields(self.Model, necessary_fields)
