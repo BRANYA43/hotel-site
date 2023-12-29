@@ -17,11 +17,15 @@ class TYPE(IntegerChoices):
 
 
 class Room(DateMixin):
+    slug = models.SlugField(max_length=50)
     type = models.PositiveSmallIntegerField(choices=TYPE.choices, default=TYPE.STANDARD)
     status = models.PositiveSmallIntegerField(choices=STATUS.choices, default=STATUS.FREE)
     single_beds = models.IntegerField(default=0)
     double_beds = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.slug
 
     @property
     def persons(self):

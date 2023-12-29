@@ -8,6 +8,7 @@ class RoomModelTest(ModelTestCase):
 
     def test_model_has_necessary_fields(self):
         necessary_fields = [
+            'slug',
             'price',
             'type',
             'status',
