@@ -24,3 +24,8 @@ class Room(models.Model):
     @property
     def persons(self):
         return self.single_beds + (self.double_beds * 2)
+
+
+class Number(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True)
+    number = models.IntegerField(unique=True)
