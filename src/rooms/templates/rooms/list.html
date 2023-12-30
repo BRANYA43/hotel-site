@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for room in object_list %}
+        <p>Title: {{ room.name }}</p>
+        <p>Type: {{ room.type }}</p>
+        <p>Persons: {{ room.persons }}</p>
+        <p>Price: {{ room.price }} UAH</p>
+        <p>Description: {{ room.description }}</p>
+    {% empty %}
+        <p>Rooms aren't added yet</p>
+    {% endfor %}
+{% endblock %}
