@@ -22,5 +22,6 @@ from django.views import generic
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('accounts.urls')),
+    path('rooms/', include('rooms.urls')),
     path('', generic.TemplateView.as_view(template_name='home.html'), name='home'),
 ]
