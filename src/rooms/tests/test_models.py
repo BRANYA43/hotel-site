@@ -5,11 +5,11 @@ from utils.cases import ModelTestCase
 from rooms.models import RoomData, TYPE, Room, STATUS
 
 
-def create_test_room_data(slug='slug', price='9999', **extra_field):
-    return RoomData.objects.create(slug=slug, price=price, **extra_field)
+def create_test_room_data(name='title', slug='slug', price='9999', **extra_field) -> RoomData:
+    return RoomData.objects.create(name=name, slug=slug, price=price, **extra_field)
 
 
-def create_test_room(room_data=None, number=1, **extra_fields):
+def create_test_room(room_data=None, number=1, **extra_fields) -> Room:
     if not room_data:
         room_data = create_test_room_data()
     return Room.objects.create(room_data=room_data, number=number, **extra_fields)
@@ -21,7 +21,8 @@ class RoomDataModelTest(ModelTestCase):
 
     def test_model_has_necessary_fields(self):
         necessary_fields = [
-            'name' 'slug',
+            'name',
+            'slug',
             'type',
             'single_beds',
             'double_beds',
