@@ -9,8 +9,8 @@ from accounts.tests import create_test_user
 from bookings.models import Booking
 from bookings.validators import PAST_DATE_ERROR_MESSAGE, CHECK_OUT_DATE_ERROR_MESSAGE
 from rooms.models import TYPE, Room
+from rooms.tests.test_models import create_test_room
 from utils.cases import ModelTestCase
-
 
 User = get_user_model()
 
@@ -113,3 +113,23 @@ class BookingModelTest(ModelTestCase):
     def test_model_instances_are_ordered_by_descending_created_date(self):
         attr = self.get_meta_attr(self.Model, 'ordering')
         self.assertIn('-created', attr)
+
+    def test_get_str_rooms_method_returns_correct_value(self):
+        room_1 = create_test_room(number='1')
+        room_2 = create_test_room(number='2')
+        bookings = create_test_booking()
+        bookings.rooms.add(room_1)
+        bookings.rooms.add(room_2)
+
+        self.assertEqual(bookings.get_str_rooms(), '1, 2')
+
+    def test_get_total_price_method_returns_correct_value(self):
+        room_1 = create_test_room(number='1')
+        room_2 = create_test_room(number='2')
+        bookings = create_test_booking()
+        bookings.rooms.add(room_1)
+        bookings.rooms.add(room_2)
+
+        expected_total_price = sum([room.room_data.price for room in bookings.rooms.all()])
+
+        self.assertEqual(bookings.get_total_price(), expected_total_price)

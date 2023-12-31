@@ -30,3 +30,11 @@ class Booking(DateMixin):
 
     def __str__(self):
         return str(self.uuid)
+
+    def get_str_rooms(self):
+        rooms = [room.number for room in self.rooms.all()]
+        return ', '.join(rooms)
+
+    def get_total_price(self):
+        prices = [room.room_data.price for room in self.rooms.all()]
+        return sum(prices)
