@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for booking in object_list %}
+    <div>
+        <p>UUID: {{ booking.uuid }}</p>
+        {% if booking.rooms.all %}
+            <p>Rooms: {{ booking.get_str_rooms }}</p>
+        {% else %}
+            <p>Rooms: Manager doesn't choose room/rooms for you.</p>
+        {% endif %}
+        <p>Persons: {{ booking.persons }}</p>
+        <p>Type: {{ booking.type }}</p>
+        {% if booking.rooms.all %}
+            <p>Total price: {{ booking.get_total_price }} UAH</p>
+        {% else %}
+            <p>Total price: -</p>
+        {% endif %}
+        <p>Check in date: {{ booking.check_in|date:"d N Y" }}</p>
+        <p>Check out date: {{ booking.check_out|date:"d N Y" }}</p>
+        <p>Created date: {{ booking.created|date:"d N Y, h:i A" }}</p>
+    </div>
+{% empty %}
+    <p>Bookings aren't made yet.</p>
+{% endfor %}
+{% endblock %}

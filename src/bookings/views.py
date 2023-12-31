@@ -11,3 +11,11 @@ class BookingCreateView(mixins.LoginRequiredMixin, generic.CreateView):
     form_class = forms.BookingCreateForm
     template_name = 'bookings/create_form.html'
     success_url = reverse_lazy('bookings:booking-list')
+
+
+class BookingListView(mixins.LoginRequiredMixin, generic.ListView):
+    model = Booking
+    template_name = 'bookings/list.html'
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
