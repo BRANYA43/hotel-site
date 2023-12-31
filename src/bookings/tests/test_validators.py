@@ -20,6 +20,9 @@ class ValidateCheckInDateTest(TestCase):
         date = datetime.now() - timedelta(days=1)
         self.assertRaisesRegex(ValidationError, PAST_DATE_ERROR_MESSAGE, validate_check_in_date, date.date())
 
+    def test_validator_do_none_if_value_is_none(self):
+        validate_check_in_date(None)  # not raise
+
 
 class ValidateCheckOutDateTest(TestCase):
     def test_validator_doesnt_raise_error(self):
@@ -38,3 +41,6 @@ class ValidateCheckOutDateTest(TestCase):
         self.assertRaisesRegex(
             ValidationError, PAST_DATE_ERROR_MESSAGE, validate_check_out_date, date.date(), check_in.date()
         )
+
+    def test_validator_do_none_if_value_is_none(self):
+        validate_check_out_date(None, None)  # not raise
