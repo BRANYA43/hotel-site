@@ -14,8 +14,8 @@ class RoomData(DateMixin):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)
     type = models.PositiveSmallIntegerField(choices=TYPE.choices, default=TYPE.STANDARD)
-    single_beds = models.PositiveSmallIntegerField(null=True)
-    double_beds = models.PositiveSmallIntegerField(null=True)
+    single_beds = models.PositiveSmallIntegerField(default=0)
+    double_beds = models.PositiveSmallIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(null=True, blank=True)
 

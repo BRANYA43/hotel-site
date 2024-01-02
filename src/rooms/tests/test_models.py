@@ -37,17 +37,17 @@ class RoomDataModelTest(ModelTestCase):
         field = self.get_field(self.Model, name='type')
         self.assertEqual(field.default, TYPE.STANDARD)
 
-    def test_single_beds_field_can_be_null_by_default(self):
+    def test_single_beds_field_is_zero_by_default(self):
         field = self.get_field(self.Model, 'single_beds')
-        self.assertTrue(field.null)
+        self.assertEqual(field.default, 0)
 
     def test_single_beds_field_is_only_positive_int(self):
         field = self.get_field(self.Model, 'single_beds')
         self.assertIsInstance(field, models.PositiveSmallIntegerField)
 
-    def test_double_beds_field_can_be_null_by_default(self):
+    def test_double_beds_field_is_zero_null_by_default(self):
         field = self.get_field(self.Model, 'double_beds')
-        self.assertTrue(field.null)
+        self.assertEqual(field.default, 0)
 
     def test_double_beds_field_is_only_positive_int(self):
         field = self.get_field(self.Model, 'double_beds')
