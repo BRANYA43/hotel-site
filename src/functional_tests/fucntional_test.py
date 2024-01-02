@@ -51,4 +51,6 @@ class FunctionalTest(LiveServerTestCase):
         return fn()
 
     def enter_to_input_field(self, input_value: str, by=By.ID, value: str | None = None):
-        self.browser.find_element(by, value).send_keys(input_value)
+        input_box = self.browser.find_element(by, value)
+        input_box.clear()
+        input_box.send_keys(input_value)

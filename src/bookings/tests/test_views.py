@@ -84,7 +84,7 @@ class BookingListViewTest(TestCase):
 
     def test_view_contains_some_message_if_booking_data_is_none(self):
         response = self.client.get(self.url)
-        expected_text = "Bookings aren't made yet."
+        expected_text = "You didn't book room yet."
 
         self.assertContains(response, expected_text)
 
