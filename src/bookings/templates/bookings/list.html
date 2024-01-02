@@ -17,7 +17,7 @@
             {% else %}
                 <p>Total price: -</p>
             {% endif %}
-            {% if booking.is_children %}
+            {% if booking.has_children %}
                 <p>Has children: <input type="checkbox" checked disabled></p>
             {% else %}
                 <p>Has children: <input type="checkbox" disabled></p>
