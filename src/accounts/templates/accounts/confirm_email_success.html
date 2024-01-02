@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
+{% block title %}Confirm Email{% endblock %}
 {% block content %}
-<p id="id_success_message">
-    You success confirmed your email.
-    Please, follow to <a id="id_login_message_link" href="{% url 'accounts:user-login' %}">sing in</a>.
-</p>
+<div class="message-block">
+    <h2 class="message-header">Confirm Email Success</h2>
+    <p id="id_success_message" class="message">
+        You success confirmed your email.
+        Please, follow to <a id="id_login_message_link" href="{% url 'accounts:user-login' %}">sing in</a>.
+    </p>
+</div>
 {% endblock %}

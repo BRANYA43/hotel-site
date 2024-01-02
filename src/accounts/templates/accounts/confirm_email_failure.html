@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% block title %}Confirm Email{% endblock %}
 {% block content %}
-<p id="id_failure_message">Failure try of confirming email. Please, try once yet.</p>
+<div class="message-block">
+    <h2 class="message-header">Confirm Email Failure</h2>
+    <p id="id_failure_message" class="message">Failure try of confirming email. Please, try once yet.</p>
+</div>
 {% endblock %}

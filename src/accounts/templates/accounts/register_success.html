@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
+{% block title %}Sin Up{% endblock %}
 {% block content %}
-<p id="id_success_message">You registered the account success, now you need to confirm your email.
-    We sent the email with the instructions to your email.
-    Please, check your email and follow the instructions.
-</p>
+<div class="message-block">
+    <h2 class="message-header">Sing Up Success</h2>
+    <p id="id_success_message" class="message">You registered the account success, now you need to confirm your email.
+        We sent the email with the instructions to your email.
+        Please, check your email and follow the instructions.
+    </p>
+</div>
 {% endblock %}
