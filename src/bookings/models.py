@@ -16,7 +16,7 @@ class Booking(DateMixin):
     rooms = models.ManyToManyField(Room)
     persons = models.PositiveSmallIntegerField(default=1)
     type = models.PositiveSmallIntegerField(choices=TYPE.choices, default=TYPE.STANDARD)
-    is_children = models.BooleanField(default=False)
+    has_children = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
     check_in = models.DateField()
     check_out = models.DateField()

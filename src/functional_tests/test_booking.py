@@ -80,7 +80,7 @@ class BookingAppTest(FunctionalTest):
         select.select_by_index(self.user_data['type'])
 
         # User has a child
-        checkbox = self.browser.find_element(value='id_is_children')
+        checkbox = self.browser.find_element(value='id_has_children')
         checkbox.click()
 
         # User choose check in date

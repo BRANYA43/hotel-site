@@ -9,7 +9,7 @@ NO_PERSONS_ERROR_MESSAGE = 'Persons can only be 1 and more.'
 class BookingCreateForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ['persons', 'type', 'is_children', 'check_in', 'check_out']
+        fields = ['persons', 'type', 'has_children', 'check_in', 'check_out']
         widgets = {'user': forms.HiddenInput()}
 
     def __init__(self, user, *args, **kwargs):

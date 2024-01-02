@@ -39,7 +39,7 @@ class BookingModelTest(ModelTestCase):
             'rooms',
             'type',
             'persons',
-            'is_children',
+            'has_children',
             'is_paid',
             'check_in',
             'check_out',
@@ -78,8 +78,8 @@ class BookingModelTest(ModelTestCase):
         field = self.get_field(self.Model, 'persons')
         self.assertEqual(field.default, 1)
 
-    def test_is_children_field_is_false_by_default(self):
-        field = self.get_field(self.Model, 'is_children')
+    def test_has_children_field_is_false_by_default(self):
+        field = self.get_field(self.Model, 'has_children')
         self.assertFalse(field.default)
 
     def test_is_paid_field_is_false_by_default(self):

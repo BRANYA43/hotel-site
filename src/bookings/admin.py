@@ -11,7 +11,7 @@ class BookingAdmin(admin.ModelAdmin):
         'user',
         'persons',
         'type',
-        'is_children',
+        'has_children',
         'is_paid',
         'check_in',
         'check_out',

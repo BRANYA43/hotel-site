@@ -17,7 +17,7 @@ class BookingCreateFormTest(FormTestCase):
         self.data = {
             'persons': 10,
             'type': TYPE.STANDARD,
-            'is_children': False,
+            'has_children': False,
             'check_in': datetime.now() + timedelta(days=1),
             'check_out': datetime.now() + timedelta(days=10),
         }
@@ -26,7 +26,7 @@ class BookingCreateFormTest(FormTestCase):
         expected_fields = [
             'persons',
             'type',
-            'is_children',
+            'has_children',
             'check_in',
             'check_out',
         ]
@@ -42,7 +42,7 @@ class BookingCreateFormTest(FormTestCase):
 
         self.assertEqual(booking.type, self.data['type'])
         self.assertEqual(booking.persons, self.data['persons'])
-        self.assertFalse(booking.is_children)
+        self.assertFalse(booking.has_children)
         self.assertEqual(booking.check_in, self.data['check_in'].date())
         self.assertEqual(booking.check_out, self.data['check_out'].date())
 
