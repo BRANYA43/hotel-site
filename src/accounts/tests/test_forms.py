@@ -24,7 +24,7 @@ class UserRegisterFormTest(FormTestCase):
         fields = self.get_fields(self.Form, only_names=True)
         self.assertFieldListEqual(fields, expected_fields)
 
-    def test_form_create_user_with_correct_data(self):
+    def test_form_creates_user_with_correct_data(self):
         form = self.Form(data=self.data)
         self.assertTrue(form.is_valid())
         user = form.save()  # not raise
@@ -54,7 +54,7 @@ class UserRegisterFormTest(FormTestCase):
         self.assertFalse(form.is_valid())
         self.assertFormError(form, 'email', forms.EXISTED_USER_ERROR_MESSAGE)
 
-    def test_form_does_not_save_user_if_data_is_invalid(self):
+    def test_form_doesnt_save_user_if_data_is_invalid(self):
         self.data['password'] = ''
         form = self.Form(data=self.data)
 
@@ -92,13 +92,13 @@ class UserLoginFormTest(FormTestCase):
         self.assertFalse(form.is_valid())
         self.assertFormError(form, None, forms.NOT_CONFIRMED_EMAIL_ERROR_MESSAGE)
 
-    def test_form_get_user_as_none_if_credential_data_is_invalid(self):
+    def test_form_gets_user_as_none_if_credential_data_is_invalid(self):
         form = self.Form(self.request, data=self.data)
         form.is_valid()
 
         self.assertIsNone(form.get_user())
 
-    def test_form_get_user_if_credential_data_is_valid(self):
+    def test_form_gets_user_if_credential_data_is_valid(self):
         user = create_test_user(**self.data)
         form = self.Form(self.request, data=self.data)
         form.is_valid()

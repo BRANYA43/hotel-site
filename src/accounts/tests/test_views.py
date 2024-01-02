@@ -45,7 +45,7 @@ class UserRegisterViewTest(TestCase):
 
         self.assertRedirects(response, reverse('accounts:user-register-success'))
 
-    def test_view_send_mail_to_user_email_POST(self):
+    def test_view_sends_mail_to_user_email_POST(self):
         self.client.post(self.url, self.data)
 
         self.assertIsNotNone(mail.outbox)
