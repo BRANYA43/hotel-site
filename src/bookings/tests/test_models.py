@@ -133,3 +133,7 @@ class BookingModelTest(ModelTestCase):
         expected_total_price = sum([room.room_data.price for room in bookings.rooms.all()])
 
         self.assertEqual(bookings.get_total_price(), expected_total_price)
+
+    def test_get_str_type_method_returns_correct_type(self):
+        booking = Booking(type=TYPE.LUXE)
+        self.assertEqual(booking.get_str_type(), TYPE.choices[booking.type][1])

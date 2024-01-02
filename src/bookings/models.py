@@ -38,3 +38,6 @@ class Booking(DateMixin):
     def get_total_price(self):
         prices = [room.room_data.price for room in self.rooms.all()]
         return sum(prices)
+
+    def get_str_type(self):
+        return TYPE.choices[self.type][1]
