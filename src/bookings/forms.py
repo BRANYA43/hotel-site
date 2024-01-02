@@ -10,7 +10,10 @@ class BookingCreateForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ['persons', 'type', 'has_children', 'check_in', 'check_out']
-        widgets = {'user': forms.HiddenInput()}
+        widgets = {
+            'check_in': forms.DateInput(attrs={'type': 'date'}),
+            'check_out': forms.DateInput(attrs={'type': 'date'}),
+        }
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)

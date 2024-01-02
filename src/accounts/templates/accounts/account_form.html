@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
+{% block title %}Account{% endblock %}
 {% block content %}
-<form id="id_account_form" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button id="id_saving_button" type="submit">Save</button>
-</form>
+<div class="form-block">
+    <h2 class="form-header">Sing up</h2>
+    <form id="id_account_form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-buttons">
+            <button id="id_saving_button" type="submit">Save</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
+{% block title %}Sing Up Continue{% endblock %}
 {% block content %}
-<form id="id_register_continue_form" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button id="id_finishing_button" type="submit">Finish</button>
-</form>
+<div class="form-block">
+    <h2 class="form-header">Sign Up Continue</h2>
+    <form id="id_register_continue_form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-buttons">
+            <button id="id_finishing_button" type="submit">Finish</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

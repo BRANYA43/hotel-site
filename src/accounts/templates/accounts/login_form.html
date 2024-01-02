@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
+{% block title %}Sing In{% endblock %}
 {% block content %}
-<form id="id_login_form" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button id="id_login_button" type="submit">Sign in</button>
-</form>
+<div class="form-block">
+    <h2 class="form-header">Sing in</h2>
+    <form id="id_login_form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-buttons">
+            <button id="id_login_button" type="submit">Sign in</button>
+            <a id="id_registering_button" href="{% url 'accounts:user-register' %}">Sing up</a>
+        </div>
+        
+    </form>
+</div>
 {% endblock %}

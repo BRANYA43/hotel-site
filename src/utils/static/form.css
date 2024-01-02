@@ -1,0 +1,82 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 5px;
+}
+
+form input[type=text], form input[type=number], form input[type=date] {
+    display: block;
+    border: 0;
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 6px 12px;
+    width: 220px;
+}
+
+form input[type=checkbox] {
+    border: 0;
+    width: 20px;
+    height: 20px;
+}
+
+form select {
+    border: 0;
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 8px 12px;
+}
+
+form button {
+    background-color: #D8E9A8;
+    border: 0;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 8px 16px;
+    width: fit-content;
+}
+
+form a {
+    color: black;
+    text-decoration: none;
+    background-color: #D8E9A8;
+    border: 0;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 8px 16px;
+    width: fit-content;
+}
+
+form button:hover {
+    background-color: #33e556;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.form-buttons * {
+    margin-right: 5px;
+}
+
+.form-buttons *:last-child {
+    margin-right: 0;
+}
+
+.form-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.form-header {
+    border: 2px solid #D8E9A8;
+    border-radius: 2px;
+    padding: 10px 20px;
+    text-align: center;
+    width: fit-content;
+}

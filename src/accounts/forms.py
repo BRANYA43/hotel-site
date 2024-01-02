@@ -89,7 +89,7 @@ class ProfileUpdateFormMixin(forms.ModelForm):
         model = Profile
         fields = ['first_name', 'last_name', 'birthday', 'telephone']
         widgets = {
-            'birthday': forms.DateInput(),
+            'birthday': forms.DateInput(attrs={'type': 'date'}),
         }
 
     @staticmethod

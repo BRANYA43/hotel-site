@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
+{% block title %}Booking{% endblock %}
 {% block content %}
-<form id="id_booking_form" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button id="id_booking_button" type="submit">Book</button>
-</form>
+<div class="form-block">
+    <h2 class="form-header">Booking</h2>
+    <form id="id_booking_form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-buttons">
+            <button id="id_booking_button" type="submit">Book</button>
+        </div>
+
+    </form>
+</div>
 {% endblock %}
