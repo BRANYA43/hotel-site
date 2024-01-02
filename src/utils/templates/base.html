@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="stylesheet" href="{% static 'navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'footer.css' %}">
     {% block links %}{% endblock %}
     <title>{% block title %}Title{% endblock %}</title>
 </head>
@@ -17,7 +18,7 @@
             <p>Some content</p>
         {% endblock %}
     </main>
-    <footer></footer>
+    {% include 'includes/footer.html' %}
 
 </body>
 </html>

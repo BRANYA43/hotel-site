@@ -5,3 +5,12 @@
     margin: 0 auto;
     font-size: 16px;
 }
+
+main {
+    display: flex;
+    border-radius: 10px;
+    background-color: #1E5128;
+    min-height: 80vh;
+    margin: 10px 0;
+    padding: 20px;
+}
