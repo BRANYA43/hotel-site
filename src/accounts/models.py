@@ -21,7 +21,7 @@ class Profile(models.Model):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     password = models.CharField(max_length=20)
-    is_confirmed_email = models.BooleanField(default=False)
+    email_is_confirmed = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     joined = models.DateTimeField(auto_now_add=True)

@@ -25,7 +25,7 @@ class UserModelTest(ModelTestCase):
             'is_active',
             'is_superuser',
             'is_staff',
-            'is_confirmed_email',
+            'email_is_confirmed',
             'joined',
             'last_login',
             'groups',
@@ -56,8 +56,8 @@ class UserModelTest(ModelTestCase):
         field = self.get_field(User, 'is_staff')
         self.assertFalse(field.default)
 
-    def test_is_confirmed_email_is_false_by_default(self):
-        field = self.get_field(User, 'is_confirmed_email')
+    def test_email_is_confirmed_is_false_by_default(self):
+        field = self.get_field(User, 'email_is_confirmed')
         self.assertFalse(field.default)
 
     def test_joined_set_date_time_only_after_creating(self):

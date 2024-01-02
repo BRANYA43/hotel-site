@@ -21,7 +21,7 @@ class UserManagerTest(TestCase):
 
         self.assertEqual(user.email, self.data['email'])
         self.assertTrue(user.check_password(self.data['password']))
-        self.assertFalse(user.is_confirmed_email)
+        self.assertFalse(user.email_is_confirmed)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
 
@@ -33,7 +33,7 @@ class UserManagerTest(TestCase):
 
         self.assertEqual(user.email, self.data['email'])
         self.assertTrue(user.check_password(self.data['password']))
-        self.assertTrue(user.is_confirmed_email)
+        self.assertTrue(user.email_is_confirmed)
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)
 

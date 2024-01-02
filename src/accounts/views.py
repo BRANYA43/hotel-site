@@ -73,7 +73,7 @@ class UserConfirmEmailView(generic.View):
     def get(self, request, uidb64, token):
         user = self.get_user(uidb64)
         if self.token_generator.check_token(user, token):
-            user.is_confirmed_email = True
+            user.email_is_confirmed = True
             user.save()
             return HttpResponseRedirect(self.success_url)
         return HttpResponseRedirect(self.failure_url)

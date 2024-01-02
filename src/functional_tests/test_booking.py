@@ -28,7 +28,7 @@ class BookingAppTest(FunctionalTest):
 
     def test_user_can_book_room(self):
         user = create_test_user()
-        user.is_confirmed_email = True
+        user.email_is_confirmed = True
         user.save()
         profile = user.profile
         profile.first_name = self.user_data['first_name']

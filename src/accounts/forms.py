@@ -69,7 +69,7 @@ class UserLoginForm(forms.Form):
             if self.user_cache is None:
                 raise ValidationError(INVALID_CREDENTIAL_DATA_ERROR_MESSAGE, code='invalid_credential_data')
 
-            if not self.user_cache.is_confirmed_email:
+            if not self.user_cache.email_is_confirmed:
                 raise ValidationError(NOT_CONFIRMED_EMAIL_ERROR_MESSAGE, code='not_confirmed_email')
 
         return self.cleaned_data

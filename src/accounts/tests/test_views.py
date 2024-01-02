@@ -106,7 +106,7 @@ class UserConfirmEmailViewTest(TestCase):
         self.client.get(self.url)
         self.user.refresh_from_db()
 
-        self.assertTrue(self.user.is_confirmed_email)
+        self.assertTrue(self.user.email_is_confirmed)
 
 
 class UserConfirmEmailSuccessViewTest(TestCase):
@@ -174,7 +174,7 @@ class UserLoginViewTest(TestCase):
         self.assertFalse(response.wsgi_request.user.is_authenticated)
 
     def test_view_logins_user(self):
-        self.user.is_confirmed_email = True
+        self.user.email_is_confirmed = True
         self.user.save()
 
         response = self.client.post(self.url, self.data)
@@ -183,7 +183,7 @@ class UserLoginViewTest(TestCase):
 
     @patch('accounts.models.Profile.has_necessary_data', return_value=True)
     def test_view_redirects_to_account_page(self, mock):
-        self.user.is_confirmed_email = True
+        self.user.email_is_confirmed = True
         self.user.save()
         response = self.client.post(self.url, self.data)
 
