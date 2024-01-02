@@ -9,6 +9,7 @@
     <header>
         <nav id="id_navbar">
             {% if user.is_authenticated %}
+                <a id="id_booking_link" href="{% url 'bookings:booking-list' %}">Booking List</a>
                 <a id="id_logout_link" href="{% url 'accounts:user-logout' %}">Sing out</a>
             {% else %}
                 <a id="id_registering_link" href="{% url 'accounts:user-register' %}">Sing up</a>

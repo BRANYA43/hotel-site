@@ -5,8 +5,8 @@ from django.test import TestCase
 
 
 class FormTestCase(TestCase):
-    def get_field(self, form: Type[Form], name: str) -> Type[Field]:
-        return form().fields[name]
+    def get_field(self, form: Type[Form], name: str, **params) -> Type[Field]:
+        return form(**params).fields[name]
 
     @staticmethod
     def get_fields(
