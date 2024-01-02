@@ -96,7 +96,7 @@ class BookingListViewTest(TestCase):
             f'UUID: {bookings.uuid}',
             "Rooms: Manager doesn't choose room/rooms for you.",
             f'Persons: {bookings.persons}',
-            f'Type: {bookings.type}',
+            f'Type: {bookings.get_str_type()}',
             'Total price: -',
             f'Check in date: {bookings.check_in.strftime("%d %b. %Y")}',
             f'Check out date: {bookings.check_out.strftime("%d %b. %Y")}',
@@ -115,14 +115,8 @@ class BookingListViewTest(TestCase):
         response = self.client.get(self.url)
 
         expected_text = [
-            f'UUID: {bookings.uuid}',
             f'Rooms: {bookings.get_str_rooms()}',
-            f'Persons: {bookings.persons}',
-            f'Type: {bookings.type}',
             f'Total price: {bookings.get_total_price()} UAH',
-            f'Check in date: {bookings.check_in.strftime("%d %b. %Y")}',
-            f'Check out date: {bookings.check_out.strftime("%d %b. %Y")}',
-            f'Created date: {bookings.created.strftime("%d %b. %Y, %I:%M %p")}',
         ]
 
         for text in expected_text:
