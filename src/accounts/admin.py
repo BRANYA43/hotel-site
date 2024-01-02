@@ -12,6 +12,8 @@ class ProfileInline(admin.StackedInline):
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
+    list_display = ['email', 'is_active', 'email_is_confirmed', 'is_staff', 'is_superuser', 'joined']
     fields = ['email', 'is_active', 'email_is_confirmed', 'is_staff', 'is_superuser', 'groups', 'last_login', 'joined']
     readonly_fields = ['last_login', 'joined']
+    list_filter = ['is_active', 'email_is_confirmed', 'is_staff', 'is_superuser']
     inlines = [ProfileInline]
