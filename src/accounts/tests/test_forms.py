@@ -1,4 +1,4 @@
-from django.forms import DateInput, HiddenInput
+from django.forms import DateInput
 from django.http import HttpRequest
 
 from accounts import forms
@@ -115,7 +115,6 @@ class ProfileUpdateFormMixinTest(FormTestCase):
         self.profile = user.profile
         self.Form = forms.ProfileUpdateFormMixin
         self.data = {
-            'user': user.pk,
             'first_name': 'Rick',
             'last_name': 'Sanchez',
             'birthday': '1958-07-03',
@@ -186,10 +185,6 @@ class ProfileUpdateFormMixinTest(FormTestCase):
 
         self.assertFalse(form.is_valid())
         self.assertFormError(form, 'telephone', forms.INVALID_TELEPHONE_ERROR_MESSAGE)
-
-    def test_user_field_is_hidden(self):
-        field = self.get_field(self.Form, 'user')
-        self.assertIsInstance(field.widget, HiddenInput)
 
     def test_birthday_field_has_date_input_widget(self):
         field = self.get_field(self.Form, 'birthday')

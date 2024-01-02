@@ -87,9 +87,8 @@ INVALID_NAME_ERROR_MESSAGE = 'Invalid {0} name. Please, enter a correct your {0}
 class ProfileUpdateFormMixin(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['user', 'first_name', 'last_name', 'birthday', 'telephone']
+        fields = ['first_name', 'last_name', 'birthday', 'telephone']
         widgets = {
-            'user': forms.HiddenInput(),
             'birthday': forms.DateInput(),
         }
 
