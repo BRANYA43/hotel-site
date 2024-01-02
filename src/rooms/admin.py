@@ -13,7 +13,8 @@ class RoomInline(admin.TabularInline):
 class RoomAdmin(admin.ModelAdmin):
     list_display = ['number', 'status', 'is_available']
     readonly_fields = ['updated', 'created']
-    filter = ['status', 'is_available']
+    search_fields = ['number']
+    list_filter = ['status', 'is_available']
 
 
 @admin.register(RoomData)
@@ -21,7 +22,8 @@ class RoomDataAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'type', 'persons', 'single_beds', 'double_beds', 'price']
     prepopulated_fields = {'slug': ['name']}
     readonly_fields = ['updated', 'created']
-    filter = ['type']
+    search_fields = ['name', 'slug']
+    list_filter = ['type', 'single_beds', 'double_beds']
     inlines = [RoomInline]
 
     @staticmethod

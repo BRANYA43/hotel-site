@@ -28,7 +28,7 @@ class BookingAppTest(FunctionalTest):
 
     def test_user_can_book_room(self):
         user = create_test_user()
-        user.is_confirmed_email = True
+        user.email_is_confirmed = True
         user.save()
         profile = user.profile
         profile.first_name = self.user_data['first_name']
@@ -80,7 +80,7 @@ class BookingAppTest(FunctionalTest):
         select.select_by_index(self.user_data['type'])
 
         # User has a child
-        checkbox = self.browser.find_element(value='id_is_children')
+        checkbox = self.browser.find_element(value='id_has_children')
         checkbox.click()
 
         # User choose check in date
@@ -101,13 +101,14 @@ class BookingAppTest(FunctionalTest):
         type = card.find_element(By.XPATH, value='//p[contains(text(), "Type:")]')
         total_price = card.find_element(By.XPATH, value='//p[contains(text(), "Total price:")]')
         has_children = card.find_element(By.XPATH, value='//p[contains(text(), "Has children:")]')
+        has_children = has_children.find_element(By.TAG_NAME, 'input')
         check_in = card.find_element(By.XPATH, value='//p[contains(text(), "Check in date:")]')
         check_out = card.find_element(By.XPATH, value='//p[contains(text(), "Check out date:")]')
 
         self.assertIn("Manager doesn't choose room/rooms for you.", rooms.text)
         self.assertIn(self.user_data['persons'], persons.text)
         self.assertIn(TYPE.choices[self.user_data['type']][1], type.text)
-        self.assertTrue(has_children.text)
+        self.assertTrue(has_children.is_selected())
         self.assertIn('-', total_price.text)
         self.assertIn(self.check_in.strftime('%d %b. %Y'), check_in.text)
         self.assertIn(self.check_out.strftime('%d %b. %Y'), check_out.text)

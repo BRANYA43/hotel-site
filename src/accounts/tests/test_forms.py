@@ -1,4 +1,4 @@
-from django.forms import DateInput, HiddenInput
+from django.forms import DateInput
 from django.http import HttpRequest
 
 from accounts import forms
@@ -24,7 +24,7 @@ class UserRegisterFormTest(FormTestCase):
         fields = self.get_fields(self.Form, only_names=True)
         self.assertFieldListEqual(fields, expected_fields)
 
-    def test_form_create_user_with_correct_data(self):
+    def test_form_creates_user_with_correct_data(self):
         form = self.Form(data=self.data)
         self.assertTrue(form.is_valid())
         user = form.save()  # not raise
@@ -54,7 +54,7 @@ class UserRegisterFormTest(FormTestCase):
         self.assertFalse(form.is_valid())
         self.assertFormError(form, 'email', forms.EXISTED_USER_ERROR_MESSAGE)
 
-    def test_form_does_not_save_user_if_data_is_invalid(self):
+    def test_form_doesnt_save_user_if_data_is_invalid(self):
         self.data['password'] = ''
         form = self.Form(data=self.data)
 
@@ -92,13 +92,13 @@ class UserLoginFormTest(FormTestCase):
         self.assertFalse(form.is_valid())
         self.assertFormError(form, None, forms.NOT_CONFIRMED_EMAIL_ERROR_MESSAGE)
 
-    def test_form_get_user_as_none_if_credential_data_is_invalid(self):
+    def test_form_gets_user_as_none_if_credential_data_is_invalid(self):
         form = self.Form(self.request, data=self.data)
         form.is_valid()
 
         self.assertIsNone(form.get_user())
 
-    def test_form_get_user_if_credential_data_is_valid(self):
+    def test_form_gets_user_if_credential_data_is_valid(self):
         user = create_test_user(**self.data)
         form = self.Form(self.request, data=self.data)
         form.is_valid()
@@ -115,7 +115,6 @@ class ProfileUpdateFormMixinTest(FormTestCase):
         self.profile = user.profile
         self.Form = forms.ProfileUpdateFormMixin
         self.data = {
-            'user': user.pk,
             'first_name': 'Rick',
             'last_name': 'Sanchez',
             'birthday': '1958-07-03',
@@ -186,10 +185,6 @@ class ProfileUpdateFormMixinTest(FormTestCase):
 
         self.assertFalse(form.is_valid())
         self.assertFormError(form, 'telephone', forms.INVALID_TELEPHONE_ERROR_MESSAGE)
-
-    def test_user_field_is_hidden(self):
-        field = self.get_field(self.Form, 'user')
-        self.assertIsInstance(field.widget, HiddenInput)
 
     def test_birthday_field_has_date_input_widget(self):
         field = self.get_field(self.Form, 'birthday')

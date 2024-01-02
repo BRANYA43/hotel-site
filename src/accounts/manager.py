@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields['is_staff'] = True
         extra_fields['is_superuser'] = True
-        extra_fields['is_confirmed_email'] = True
+        extra_fields['email_is_confirmed'] = True
         return self._create_user(email, password, **extra_fields)
 
     def _create_user(self, email, password=None, **extra_field):

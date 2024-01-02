@@ -12,7 +12,7 @@ from rooms.tests.test_models import create_test_room
 
 class BookingCreateViewTest(TestCase):
     def setUp(self) -> None:
-        self.user = create_test_user(is_confirmed_email=True)
+        self.user = create_test_user(email_is_confirmed=True)
         self.client.force_login(self.user)
         self.url = reverse('bookings:booking-create')
         check_in = datetime.now() + timedelta(days=1)
@@ -53,7 +53,7 @@ class BookingCreateViewTest(TestCase):
         self.assertEqual(booking.user.id, self.data['user'])
         self.assertEqual(booking.persons, self.data['persons'])
         self.assertEqual(booking.type, self.data['type'])
-        self.assertFalse(booking.is_children)
+        self.assertFalse(booking.has_children)
         self.assertEqual(booking.check_in, self.data['check_in'])
         self.assertEqual(booking.check_out, self.data['check_out'])
 

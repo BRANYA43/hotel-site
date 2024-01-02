@@ -69,7 +69,7 @@ class UserLoginForm(forms.Form):
             if self.user_cache is None:
                 raise ValidationError(INVALID_CREDENTIAL_DATA_ERROR_MESSAGE, code='invalid_credential_data')
 
-            if not self.user_cache.is_confirmed_email:
+            if not self.user_cache.email_is_confirmed:
                 raise ValidationError(NOT_CONFIRMED_EMAIL_ERROR_MESSAGE, code='not_confirmed_email')
 
         return self.cleaned_data
@@ -87,9 +87,8 @@ INVALID_NAME_ERROR_MESSAGE = 'Invalid {0} name. Please, enter a correct your {0}
 class ProfileUpdateFormMixin(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['user', 'first_name', 'last_name', 'birthday', 'telephone']
+        fields = ['first_name', 'last_name', 'birthday', 'telephone']
         widgets = {
-            'user': forms.HiddenInput(),
             'birthday': forms.DateInput(),
         }
 

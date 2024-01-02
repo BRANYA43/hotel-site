@@ -87,7 +87,7 @@ class AccountsAppTest(FunctionalTest):
 
     def test_user_can_login_and_logout(self):
         user = create_test_user()
-        user.is_confirmed_email = True
+        user.email_is_confirmed = True
         user.save()
         profile = user.profile
         profile.first_name = self.user_data['first_name']

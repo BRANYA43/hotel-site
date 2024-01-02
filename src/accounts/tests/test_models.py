@@ -25,7 +25,7 @@ class UserModelTest(ModelTestCase):
             'is_active',
             'is_superuser',
             'is_staff',
-            'is_confirmed_email',
+            'email_is_confirmed',
             'joined',
             'last_login',
             'groups',
@@ -33,38 +33,38 @@ class UserModelTest(ModelTestCase):
         ]
         self.assertModelHasNecessaryFields(User, necessary_fields)
 
-    def test_email_is_username_field(self):
+    def test_email_field_is_username_field(self):
         self.assertEqual(self.model.USERNAME_FIELD, 'email')
 
-    def test_email_is_unique(self):
+    def test_email_field_is_unique(self):
         field = self.get_field(User, 'email')
         self.assertTrue(field.unique)
 
-    def test_password_max_length_is_20(self):
+    def test_password_field_max_length_is_20(self):
         field = self.get_field(User, 'password')
         self.assertEqual(field.max_length, 20)
 
-    def test_is_active_is_true_by_default(self):
+    def test_is_active_field_is_true_by_default(self):
         field = self.get_field(User, 'is_active')
         self.assertTrue(field.default)
 
-    def test_is_superuser_is_false_by_default(self):
+    def test_is_superuser_field_is_false_by_default(self):
         field = self.get_field(User, 'is_superuser')
         self.assertFalse(field.default)
 
-    def test_is_staff_is_false_by_default(self):
+    def test_is_staff_field_is_false_by_default(self):
         field = self.get_field(User, 'is_staff')
         self.assertFalse(field.default)
 
-    def test_is_confirmed_email_is_false_by_default(self):
-        field = self.get_field(User, 'is_confirmed_email')
+    def test_email_field_is_confirmed_is_false_by_default(self):
+        field = self.get_field(User, 'email_is_confirmed')
         self.assertFalse(field.default)
 
-    def test_joined_set_date_time_only_after_creating(self):
+    def test_joined_field_set_date_time_only_after_creating(self):
         field = self.get_field(User, 'joined')
         self.assertTrue(field.auto_now_add)
 
-    def test_get_user_model_returns_this_model(self):
+    def test_get_user_model_method_returns_this_model(self):
         self.assertIs(get_user_model(), self.model)
 
     def test_manager_is_UserManager(self):
@@ -89,23 +89,23 @@ class ProfileModelTest(ModelTestCase):
         self.assertTrue(field.one_to_one)
         self.assertIs(field.related_model, get_user_model())
 
-    def test_first_name_is_null(self):
+    def test_first_name_field_is_null(self):
         field = self.get_field(Profile, 'first_name')
         self.assertTrue(field.null)
 
-    def test_last_name_is_null(self):
+    def test_last_name_field_is_null(self):
         field = self.get_field(Profile, 'last_name')
         self.assertTrue(field.null)
 
-    def test_birthday_is_null(self):
+    def test_birthday_field_is_null(self):
         field = self.get_field(Profile, 'birthday')
         self.assertTrue(field.null)
 
-    def test_telephone_is_null(self):
+    def test_telephone_field_is_null(self):
         field = self.get_field(Profile, 'telephone')
         self.assertTrue(field.null)
 
-    def test_model_create_after_save_user_model(self):
+    def test_model_is_created_after_save_user_model(self):
         user = create_test_user()
 
         self.assertEqual(Profile.objects.count(), 1)
@@ -123,12 +123,12 @@ class ProfileModelTest(ModelTestCase):
 
         self.assertEqual(Profile.objects.count(), 0)
 
-    def test_has_necessary_data_returns_false_if_model_data_is_empty(self):
+    def test_has_necessary_data_property_returns_false_if_model_data_is_empty(self):
         profile = Profile()
 
         self.assertFalse(profile.has_necessary_data)
 
-    def test_has_necessary_data_returns_false_if_any_model_field_is_none(self):
+    def test_has_necessary_data_property_returns_false_if_any_model_field_is_none(self):
         data = {
             'last_name': 'Sanchez',
             'birthday': '1958-07-03',
@@ -138,7 +138,7 @@ class ProfileModelTest(ModelTestCase):
 
         self.assertFalse(profile.has_necessary_data)
 
-    def test_has_necessary_data_returns_true_if_model_data_is_full(self):
+    def test_has_necessary_data_property_returns_true_if_model_data_is_full(self):
         data = {
             'first_name': 'Rick',
             'last_name': 'Sanchez',
