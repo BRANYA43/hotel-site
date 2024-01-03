@@ -24,7 +24,7 @@ class Profile(models.Model):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True, verbose_name='Електронна пошта')
-    password = models.CharField(max_length=20, verbose_name='Пароль')
+    password = models.CharField(max_length=255, verbose_name='Пароль')
     email_is_confirmed = models.BooleanField(default=False, verbose_name='Електронна пошта підтверджена')
     is_active = models.BooleanField(default=True, verbose_name='Активний')
     is_staff = models.BooleanField(default=False, verbose_name='Персонал готелю')

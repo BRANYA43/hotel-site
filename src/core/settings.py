@@ -138,7 +138,7 @@ LOGIN_URL = reverse_lazy('accounts:user-login')
 
 
 if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEFAULT_FROM_EMAIL = 'company@domain.com'
     SERVER_EMAIL = 'company@domain.com'
 
