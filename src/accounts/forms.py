@@ -15,9 +15,9 @@ EXISTED_USER_ERROR_MESSAGE = 'User with such a email is existed.'
 
 
 class UserRegisterForm(forms.Form):
-    email = forms.CharField(max_length=255)
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirmed_password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.CharField(max_length=255, label='Електронна пошта')
+    password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
+    confirmed_password = forms.CharField(widget=forms.PasswordInput, label='Підтвердження пароля')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -51,8 +51,8 @@ NOT_CONFIRMED_EMAIL_ERROR_MESSAGE = (
 
 
 class UserLoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    email = forms.CharField(max_length=255, label='Електронна пошта')
+    password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
 
     def __init__(self, request, *args, **kwargs):
         self.request = request

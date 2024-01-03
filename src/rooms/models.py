@@ -11,16 +11,18 @@ class TYPE(models.IntegerChoices):
 
 
 class RoomData(DateMixin):
-    name = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50)
-    type = models.PositiveSmallIntegerField(choices=TYPE.choices, default=TYPE.STANDARD)
-    single_beds = models.PositiveSmallIntegerField(default=0)
-    double_beds = models.PositiveSmallIntegerField(default=0)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    description = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=50, verbose_name='Назва')
+    slug = models.SlugField(max_length=50, verbose_name='Слаг')
+    type = models.PositiveSmallIntegerField(choices=TYPE.choices, default=TYPE.STANDARD, verbose_name='Тип')
+    single_beds = models.PositiveSmallIntegerField(default=0, verbose_name='Односпальні ліжка')
+    double_beds = models.PositiveSmallIntegerField(default=0, verbose_name='Двоспальні ліжка')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Ціна')
+    description = models.TextField(null=True, blank=True, verbose_name='Опис')
 
     class Meta:
         ordering = ['type']
+        verbose_name = 'Дані Кімнати'
+        verbose_name_plural = 'Дані Кімнат'
 
     def __str__(self):
         return self.slug
@@ -38,13 +40,15 @@ class STATUS(models.IntegerChoices):
 
 
 class Room(DateMixin):
-    room_data = models.ForeignKey(RoomData, models.PROTECT)
-    number = models.CharField(max_length=10, unique=True)
-    status = models.PositiveSmallIntegerField(choices=STATUS.choices, default=STATUS.FREE)
-    is_available = models.BooleanField(default=True)
+    room_data = models.ForeignKey(RoomData, models.PROTECT, verbose_name='Дані номеру')
+    number = models.CharField(max_length=10, unique=True, verbose_name='Номер')
+    status = models.PositiveSmallIntegerField(choices=STATUS.choices, default=STATUS.FREE, verbose_name='Статус')
+    is_available = models.BooleanField(default=True, verbose_name='Доступний')
 
     class Meta:
         ordering = ['number']
+        verbose_name = 'Кімната'
+        verbose_name_plural = 'Кімнати'
 
     def __str__(self):
         return self.number
