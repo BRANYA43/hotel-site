@@ -2,7 +2,7 @@
 {% block title %}Sing In{% endblock %}
 {% block content %}
 <div class="form-block">
-    <h2 class="form-header">Sing in</h2>
+    <h2 class="form-header">Sing In</h2>
     <form id="id_login_form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
