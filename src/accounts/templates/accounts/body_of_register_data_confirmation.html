@@ -1,10 +1,10 @@
-<p>Hello!</p>
-<p>Thank you for registration account on our site <a href="{% url 'home' %}">{{ site_name }}</a>.</p>
-<p>For activation your account you necessarily follow by next link:</p>
+<p>Вітаю!</p>
+<p>Дякую що зареєструвалися на нашому сайті <a href="{% url 'home' %}">{{ site_name }}</a>.</p>
+<p>Для активації вашого аккаунту вам потрібно перейти по цьому посиланню:</p>
 <p></p>
 <p>{{ protocol }}://{{ domain }}{% url 'accounts:user-confirm-email' uidb64=uid token=token %}</p>
 <p></p>
-<p>If you cannot follow by this link, try to copy it to address field of your browser.</p>
-<p>This message is made automatically. Please, do not answer to it.</p>
-<p>Sincerely,</p>
-<p>{{ site_name }} service team</p>
+<p>Якщо ви не можете перейти по цьому посиланню, спробуйте скопіювати це посилання та вставити в пошук браузера .</p>
+<p>Це посилання формується автоматично. Будь ласка, не відповідайте на нього.</p>
+<p>Із повагою,</p>
+<p>Служба підтримки {{ site_name }}</p>

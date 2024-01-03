@@ -2,12 +2,12 @@
 {% block title %}Booking{% endblock %}
 {% block content %}
 <div class="form-block">
-    <h2 class="form-header">Booking</h2>
+    <h2 class="form-header">Бронювання</h2>
     <form id="id_booking_form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <div class="form-buttons">
-            <button id="id_booking_button" type="submit">Book</button>
+            <button id="id_booking_button" type="submit">Забронювати</button>
         </div>
 
     </form>

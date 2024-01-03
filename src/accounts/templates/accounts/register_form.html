@@ -2,13 +2,13 @@
 {% block title %}Sing Up{% endblock %}
 {% block content %}
 <div class="form-block">
-    <h2 class="form-header">Sing Up</h2>
+    <h2 class="form-header">Реєстрація</h2>
     <form id="id_register_form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <div class="form-buttons">
-            <button id="id_registering_button" type="submit" >Sing up</button>
-            <a id="id_login_button" href="{% url 'accounts:user-login' %}">Sing in</a>
+            <button id="id_registering_button" type="submit" >Зареєструватися</button>
+            <a id="id_login_button" href="{% url 'accounts:user-login' %}">Війти</a>
         </div>
     </form>
 </div>

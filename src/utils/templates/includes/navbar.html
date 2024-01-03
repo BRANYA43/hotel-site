@@ -1,19 +1,19 @@
 <nav id="id_navbar">
     <div>
-        <a id="id_home_link" href="{% url 'home' %}">Home</a>
-        <a id="id_room_list_link" href="{% url 'rooms:room-list' %}">Rooms</a>
-        <a id="id_about_us_link" href="#">About us</a>
-        <a id="id_service_link" href="#">Service</a>
+        <a id="id_home_link" href="{% url 'home' %}">Головна</a>
+        <a id="id_room_list_link" href="{% url 'rooms:room-list' %}">Кімнати</a>
+        <a id="id_about_us_link" href="#">Про Нас</a>
+        <a id="id_service_link" href="#">Послуги</a>
     </div>
     <div></div>
     <div>
         {% if user.is_authenticated %}
-            <a id="id_booking_link" href="{% url 'bookings:booking-list' %}">Bookings</a>
-            <a id="id_account_link" href="{% url 'accounts:user-account' %}">Account</a>
-            <a id="id_logout_link" href="{% url 'accounts:user-logout' %}">Sing out</a>
+            <a id="id_booking_link" href="{% url 'bookings:booking-list' %}">Бронювання</a>
+            <a id="id_account_link" href="{% url 'accounts:user-account' %}">Аккаунт</a>
+            <a id="id_logout_link" href="{% url 'accounts:user-logout' %}">Вийти</a>
         {% else %}
-            <a id="id_registering_link" class="item" href="{% url 'accounts:user-register' %}">Sing up</a>
-            <a id="id_login_link" href="{% url 'accounts:user-login' %}">Sing in</a>
+            <a id="id_registering_link" class="item" href="{% url 'accounts:user-register' %}">Зареєструватися</a>
+            <a id="id_login_link" href="{% url 'accounts:user-login' %}">Війти</a>
         {% endif %}
     </div>
 </nav>

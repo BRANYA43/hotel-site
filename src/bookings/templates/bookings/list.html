@@ -6,34 +6,34 @@
 {% block title %}Booking List{% endblock %}
 {% block content %}
 <div id="id_booking_list">
-    <a id="id_booking_room_link" href="{% url 'bookings:booking-create' %}">Book room</a>
-    <h2 class="header">Booking List</h2>
+    <a id="id_booking_room_link" href="{% url 'bookings:booking-create' %}">Забронювати кімнату</a>
+    <h2 class="header">Список Бронювань</h2>
     {% for booking in object_list %}
         <div class="card">
             <p>UUID: {{ booking.uuid }}</p>
             {% if booking.rooms.all %}
-                <p>Rooms: {{ booking.get_str_rooms }}</p>
+                <p>Кімнати: {{ booking.get_str_rooms }}</p>
             {% else %}
-                <p>Rooms: Manager doesn't choose room/rooms for you.</p>
+                <p>Кімнати: Manager doesn't choose room/rooms for you.</p>
             {% endif %}
-            <p>Persons: {{ booking.persons }}</p>
-            <p>Type: {{ booking.get_str_type }}</p>
+            <p>Осіб: {{ booking.persons }}</p>
+            <p>Тип: {{ booking.get_str_type }}</p>
             {% if booking.rooms.all %}
-                <p>Total price: {{ booking.get_total_price }} UAH</p>
+                <p>Тотальна сума: {{ booking.get_total_price }} UAH</p>
             {% else %}
-                <p>Total price: -</p>
+                <p>Тотальна сума: -</p>
             {% endif %}
             {% if booking.has_children %}
-                <p>Has children: <input type="checkbox" checked disabled></p>
+                <p>Є діти: <input type="checkbox" checked disabled></p>
             {% else %}
-                <p>Has children: <input type="checkbox" disabled></p>
+                <p>Є діти: <input type="checkbox" disabled></p>
             {% endif %}
-            <p>Check in date: {{ booking.check_in|date:"d N Y" }}</p>
-            <p>Check out date: {{ booking.check_out|date:"d N Y" }}</p>
-            <p>Created date: {{ booking.created|date:"d N Y, h:i A" }}</p>
+            <p>Дата заїзду: {{ booking.check_in|date:"d N Y" }}</p>
+            <p>Дата виїзду: {{ booking.check_out|date:"d N Y" }}</p>
+            <p>Дата створення: {{ booking.created|date:"d N Y, h:i A" }}</p>
         </div>
     {% empty %}
-        <p id="id_empty_list_message">You didn't book room yet.</p>
+        <p id="id_empty_list_message">Поки що ви нічого не бронювали.</p>
 </div>
 {% endfor %}
 {% endblock %}
