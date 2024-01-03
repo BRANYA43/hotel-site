@@ -14,6 +14,17 @@ SAVE_ERROR_MESSAGE = 'User could not be created because data did not validate.'
 EXISTED_USER_ERROR_MESSAGE = 'User with such a email is existed.'
 
 
+class UserAdminForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def save(self, commit=True):
+        password = self.cleaned_data['password']
+        self.instance.set_password(password)
+        return super().save(commit)
+
+
 class UserRegisterForm(forms.Form):
     email = forms.CharField(max_length=255, label='Електронна пошта')
     password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
