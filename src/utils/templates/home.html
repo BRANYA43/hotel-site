@@ -1,2 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block links %}
+<link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
 {% block title %}Home{% endblock %}
+{% block content %}
+<div>
+    <h1>Hotel Gefest</h1>
+    <img src="{% static 'images/hotel.jpg' %}">
+</div>
+{% endblock %}

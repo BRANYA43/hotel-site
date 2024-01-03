@@ -1,0 +1,21 @@
+main div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+main div h1 {
+    border: 2px solid #D8E9A8;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+main div img {
+    outline: 10px solid #D8E9A8;
+    border-radius: 10px;
+    margin: 20px 50px;
+}
